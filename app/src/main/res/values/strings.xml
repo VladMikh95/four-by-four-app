@@ -3,4 +3,6 @@
     <string name="buttonNewGameText">Новая игра</string>
     <string name="buttonGameRulesText">Правила игры</string>
     <string name="imageView_empty" />
+    <string name="button_resume_text">Продолжить</string>
+    <string name="botton_setting_text">Настройки</string>
 </resources>

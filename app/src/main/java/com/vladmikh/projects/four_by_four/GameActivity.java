@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -192,14 +195,58 @@ public class GameActivity extends AppCompatActivity {
             case 19:
                 result = imageView19;
                 break;
-            default:
+            case 20:
                 result = imageView20;
+                break;
+            default:
+                result =  new ImageView(this);
+                result.setId(-1);
         }
         return result;
     }
 
-    private boolean isNearImageView (String numImageView) {
+    private boolean isNearImageView (ImageView imageView, String numImageView) {
+        ImageView imageViewNear;
+        String[] nums = numImageView.split(" ");
+
+        for (String num : nums) {
+            imageViewNear =determineImageView(Integer.parseInt(num));
+            if (imageView.equals(imageViewNear)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isWin() {
         boolean result = false;
+
+        if (imageView7 == null && imageView10 == null && imageView11 == null && imageView14 == null) {
+            if (imageView1.getDrawable().equals(imageView2.getDrawable())
+                    && imageView1.getDrawable().equals(imageView5.getDrawable())
+                    && imageView1.getDrawable().equals(imageView6.getDrawable())) {
+
+                if (imageView3.getDrawable().equals(imageView4.getDrawable())
+                        && imageView3.getDrawable().equals(imageView8.getDrawable())
+                        && imageView3.getDrawable().equals(imageView9.getDrawable())) {
+
+                    if (imageView12.getDrawable().equals(imageView13.getDrawable())
+                            && imageView12.getDrawable().equals(imageView17.getDrawable())
+                            && imageView12.getDrawable().equals(imageView18.getDrawable())) {
+
+                        if (imageView15.getDrawable().equals(imageView15.getDrawable())
+                                && imageView15.getDrawable().equals(imageView19.getDrawable())
+                                && imageView15.getDrawable().equals(imageView20.getDrawable())) {
+
+                            result = true;
+
+                        }
+
+                    }
+                }
+            }
+        }
+
         return result;
     }
 
@@ -214,13 +261,30 @@ public class GameActivity extends AppCompatActivity {
             }
 
         } else  {
-            if (chosenFigure.getId() != imageView.getId() && imageView.getDrawable() == null) {
+            if (chosenFigure.getId() != imageView.getId()
+                    && imageView.getDrawable() == null
+                    && isNearImageView(imageView, chosenFigure.getTag().toString())) {
                 imageView.setImageDrawable(chosenFigure.getDrawable());
                 chosenFigure.setImageDrawable(null);
+                if (isWin()) {
+                    Toast.makeText(this, "Победа", Toast.LENGTH_SHORT).show();
+                }
             }
             chosenFigure.setBackgroundColor(getResources().getColor(R.color.white));
             chosenFigure = null;
             isChosenFigure = false;
         }
     }
+
+    private void test1() {
+        imageView1.setImageResource(R.drawable.color1);
+        ImageView imageView;
+
+        for (int i = 2; i <= 20; i++) {
+            imageView = determineImageView(i);
+            imageView.setImageDrawable(null);
+        }
+    }
+
+
 }
