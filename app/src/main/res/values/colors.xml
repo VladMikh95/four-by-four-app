@@ -8,5 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#696969</color>
+    <color name="dark_grey">#A9A9A9</color>
     <color name="backstage_game">#8FBC8F</color>
+    <color name="LimeGreen">#3CB371</color>
 </resources>

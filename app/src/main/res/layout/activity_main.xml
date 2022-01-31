@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/backstage_main"
+        android:contentDescription="@string/imageview_backstage_content_description"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,19 +19,17 @@
 
     <Button
         android:id="@+id/buttonNewGame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonNewGameText"
-        android:onClick="onClickPlayNewGame"
+        style="@style/buttonStyle"
         android:layout_marginTop="36dp"
+        android:onClick="onClickPlayNewGame"
+        android:text="@string/buttonNewGameText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonResume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/buttonStyle"
         android:text="@string/button_resume_text"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/buttonNewGame"
@@ -39,8 +38,7 @@
 
     <Button
         android:id="@+id/buttonGameRules"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/buttonStyle"
         android:text="@string/buttonGameRulesText"
         android:onClick="onClickReadGameRules"
         android:layout_marginTop="16dp"
@@ -50,14 +48,23 @@
 
     <Button
         android:id="@+id/buttonSetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/buttonStyle"
         android:text="@string/botton_setting_text"
         android:onClick="onClickReadGameRules"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGameRules"/>
+
+    <Button
+        android:id="@+id/buttonStatistics"
+        style="@style/buttonStyle"
+        android:text="@string/button_statistics_text"
+        android:onClick="onClickReadGameRules"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSetting"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

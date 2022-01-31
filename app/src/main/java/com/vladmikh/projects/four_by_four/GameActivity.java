@@ -3,6 +3,7 @@ package com.vladmikh.projects.four_by_four;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,8 +37,12 @@ public class GameActivity extends AppCompatActivity {
     private ImageView imageView19;
     private ImageView imageView20;
 
+    private TextView textViewTimer;
+
     private boolean isChosenFigure;
     private ImageView chosenFigure;
+
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +70,19 @@ public class GameActivity extends AppCompatActivity {
         imageView18 = findViewById(R.id.imageView18);
         imageView19 = findViewById(R.id.imageView19);
         imageView20 = findViewById(R.id.imageView20);
+        textViewTimer = findViewById(R.id.textViewTimer);
 
         startNewGame();
-
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        countDownTimer = new GameTimer(63000, 1000);
+        countDownTimer.start();
+        if (isWin()) {
+            Toast.makeText(this, "Победа", Toast.LENGTH_SHORT).show();
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
     }
 
     public void startNewGame(){
@@ -255,8 +270,7 @@ public class GameActivity extends AppCompatActivity {
         if (!isChosenFigure)  {
             if (imageView.getDrawable() != null) {
                 chosenFigure = imageView;
-                imageView.setBackgroundColor(getResources().getColor(R.color.grey));
-
+                imageView.setBackgroundResource(R.drawable.chosen_field);
                 isChosenFigure = true;
             }
 
@@ -266,9 +280,6 @@ public class GameActivity extends AppCompatActivity {
                     && isNearImageView(imageView, chosenFigure.getTag().toString())) {
                 imageView.setImageDrawable(chosenFigure.getDrawable());
                 chosenFigure.setImageDrawable(null);
-                if (isWin()) {
-                    Toast.makeText(this, "Победа", Toast.LENGTH_SHORT).show();
-                }
             }
             chosenFigure.setBackgroundColor(getResources().getColor(R.color.white));
             chosenFigure = null;
@@ -283,6 +294,29 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 2; i <= 20; i++) {
             imageView = determineImageView(i);
             imageView.setImageDrawable(null);
+        }
+    }
+
+
+
+    private class GameTimer extends CountDownTimer {
+
+        public GameTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long l) {
+            int minutes = (int) (l / 60000);
+            int seconds = (int) (l % 60000 / 1000);
+            String time = String.format("%02d:%02d", minutes, seconds);
+            textViewTimer.setText(time);
+        }
+
+        @Override
+        public void onFinish() {
+            Toast.makeText(getApplicationContext(), "Время вышло!", Toast.LENGTH_SHORT).show();
+            textViewTimer.setText("00:00");
         }
     }
 

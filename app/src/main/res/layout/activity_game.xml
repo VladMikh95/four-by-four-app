@@ -7,6 +7,18 @@
     android:background="@color/backstage_game"
     tools:context=".GameActivity">
 
+    <TextView
+        android:id="@+id/textViewTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/timer"
+        android:text="Hello!"
+        android:textSize="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint"
@@ -14,10 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <!-- android:tag="1 5" Номера соседних imageView куда можно передвинуть фишку-->
         <ImageView
@@ -27,7 +40,7 @@
             android:tag="2 5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/divider_horizontal_bright"/>
+            app:srcCompat="@android:drawable/divider_horizontal_bright" />
 
 
         <ImageView
@@ -203,7 +216,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
