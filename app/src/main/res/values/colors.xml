@@ -10,5 +10,6 @@
     <color name="grey">#696969</color>
     <color name="dark_grey">#A9A9A9</color>
     <color name="backstage_game">#8FBC8F</color>
-    <color name="LimeGreen">#3CB371</color>
+    <color name="MediumSeaGreen">#3CB371</color>
+    <color name="LightGreen">#90EE90</color>
 </resources>

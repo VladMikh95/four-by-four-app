@@ -24,7 +24,7 @@
     </style>
 
     <style name="buttonStyle">
-        <item name="android:backgroundTint">@color/LimeGreen</item>
+        <item name="android:backgroundTint">@color/MediumSeaGreen</item>
         <item name="cornerRadius">16dp</item>
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">wrap_content</item>

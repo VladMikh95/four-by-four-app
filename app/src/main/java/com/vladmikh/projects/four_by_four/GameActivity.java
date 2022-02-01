@@ -2,8 +2,13 @@ package com.vladmikh.projects.four_by_four;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +18,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.prefs.PreferenceChangeEvent;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -44,10 +50,15 @@ public class GameActivity extends AppCompatActivity {
 
     private CountDownTimer countDownTimer;
 
+    private SharedPreferences preferences;
+    private static final String PREFERENCE_EMPTY = "empty";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        preferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
 
         imageView1 = findViewById(R.id.imageView1);
         Log.i("abc", (String) imageView1.getTag());
@@ -72,7 +83,7 @@ public class GameActivity extends AppCompatActivity {
         imageView20 = findViewById(R.id.imageView20);
         textViewTimer = findViewById(R.id.textViewTimer);
 
-        startNewGame();
+        getFieldState();
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
@@ -150,6 +161,50 @@ public class GameActivity extends AppCompatActivity {
         return result;
     }
 
+    private int determineNumColor(Drawable drawable) {
+        int result;
+        if (drawable.equals(getResources().getDrawable(R.drawable.color1))) {
+            result =  1;
+        } else if (drawable.equals(getResources().getDrawable(R.drawable.color2))) {
+            result =  2;
+        } else if (drawable.equals(getResources().getDrawable(R.drawable.color3))) {
+            result =  3;
+        } else if (drawable.equals(getResources().getDrawable(R.drawable.color4))) {
+            result =  4;
+        } else {
+            result = 0;
+        }
+        return result;
+    }
+
+    //Метод сохраняет в SharedPreferences текущее состояние поля
+    private void saveFieldState() {
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 1; i <= 20; i++) {
+            builder.append(determineNumColor(determineImageView(i).getDrawable()));
+        }
+        preferences.edit().putString(MainActivity.FIELD_STATE_PREFERENCE, builder.toString());
+
+    }
+
+    //Метод возвращает из SharedPreferences сохраненное состояние поля
+    private void getFieldState() {
+        String fieldState = preferences.getString(MainActivity.FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY);
+        ImageView imageView;
+
+        if (fieldState.length() != 20) {
+            startNewGame();
+        } else {
+            for (int i = 1; i <= 20; i++) {
+                imageView = determineImageView(i);
+                imageView.setImageResource(determineColorId(fieldState.charAt(i-1)));
+            }
+        }
+
+    }
+
+    //Возвращает ImageView по числу
     private ImageView determineImageView(int numOfImageView) {
         ImageView result;
         switch(numOfImageView) {
