@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,10 +31,14 @@ public class MainActivity extends AppCompatActivity {
         if (sharedPreferences.getString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).length() != 20) {
             buttonResume.setClickable(false);
             buttonResume.setBackgroundColor(getResources().getColor(R.color.LightGreen));
+        } else {
+            buttonResume.setClickable(true);
+            buttonResume.setBackgroundColor(getResources().getColor(R.color.MediumSeaGreen));
         }
     }
 
     public void onClickPlayNewGame(View view) {
+        sharedPreferences.edit().putString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).apply();
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
@@ -44,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickResume(View view) {
-        if (sharedPreferences.getString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).length() != 20) {
-            view.setClickable(false);
-            view.setBackgroundColor(getResources().getColor(R.color.LightGreen));
-        }
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 }

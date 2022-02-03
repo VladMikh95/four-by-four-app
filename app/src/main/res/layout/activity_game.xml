@@ -40,7 +40,9 @@
             android:tag="2 5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/divider_horizontal_bright" />
+            app:srcCompat="@android:drawable/divider_horizontal_bright">
+
+        </ImageView>
 
 
         <ImageView
