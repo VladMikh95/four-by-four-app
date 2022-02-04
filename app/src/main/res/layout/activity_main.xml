@@ -51,7 +51,7 @@
         android:id="@+id/buttonSetting"
         style="@style/buttonStyle"
         android:text="@string/botton_setting_text"
-        android:onClick="onClickReadGameRules"
+        android:onClick="onClickSettings"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

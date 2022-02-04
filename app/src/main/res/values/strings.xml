@@ -7,4 +7,10 @@
     <string name="botton_setting_text">Настройки</string>
     <string name="button_statistics_text">Статистика</string>
     <string name="imageview_backstage_content_description">Заставка</string>
+    <string-array name="timeSettings">
+        <item name="no_time_limit">Без ограничений</item>
+        <item name="three_min">3 минуты</item>
+        <item name="five_min">5 минут</item>
+        <item name="ten_min">10 минут</item>
+    </string-array>
 </resources>
