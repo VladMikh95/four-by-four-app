@@ -1,30 +1,32 @@
 package com.vladmikh.projects.four_by_four;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
 
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.vladmikh.projects.four_by_four.adapters.TimeSpinnerAdapter;
 
 public class SettingsActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener, CustomSpinner.OnSpinnerEventsListener{
 
     private CustomSpinner spinnerTime;
     private ArrayAdapter adapter;
+    private SharedPreferences sharedPreferences;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         spinnerTime = findViewById(R.id.spinnerTime);
         spinnerTime.setSpinnerEventsListener(this);
 
@@ -41,7 +43,8 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+        sharedPreferences.edit().putInt(MainActivity.TIME_MODE, i).apply();
+        Toast.makeText(this, String.valueOf(sharedPreferences.getInt(MainActivity.TIME_MODE, 0)), Toast.LENGTH_SHORT).show();
     }
 
     @Override

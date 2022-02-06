@@ -61,7 +61,7 @@
         android:id="@+id/buttonStatistics"
         style="@style/buttonStyle"
         android:text="@string/button_statistics_text"
-        android:onClick="onClickReadGameRules"
+        android:onClick="onClickStatistics"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

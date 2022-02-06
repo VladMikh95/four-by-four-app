@@ -18,6 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String SHARED_PREFERENCES_NAME = "shared_preferences";
     public static final String FIELD_STATE_PREFERENCE = "field_state";
+    public static final String TIME_MODE = "time_mode";
+    public static final String NO_TIME_LIMIT_VICTORY = "noTimeLimitVictory";
+    public static final String NO_TIME_LIMIT_GAME = "noTimeLimitGame";
+    public static final String THREE_MIN_VICTORY = "threeMinVictory";
+    public static final String THREE_MIN_GAME = "threeMinGame";
+    public static final String FIVE_MIN_VICTORY = "fiveMinVictory";
+    public static final String FIVE_MIN_GAME = "fiveMinGame";
+    public static final String TEN_MIN_VICTORY = "tenMinVictory";
+    public static final String TEN_MIN_GAME = "tenMinGame";
+
     private static final String PREFERENCE_EMPTY = "empty";
 
     @Override
@@ -55,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickSettings(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickStatistics(View view) {
+        Intent intent = new Intent(this, StatisticsActivity.class);
         startActivity(intent);
     }
 }
