@@ -16,11 +16,8 @@ import android.widget.Toast;
 public class SettingsActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener, CustomSpinner.OnSpinnerEventsListener{
 
-    private CustomSpinner spinnerTime;
-    private ArrayAdapter adapter;
     private SharedPreferences sharedPreferences;
-
-
+    private CustomSpinner spinnerTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +26,13 @@ public class SettingsActivity extends AppCompatActivity
         sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         spinnerTime = findViewById(R.id.spinnerTime);
         spinnerTime.setSpinnerEventsListener(this);
+        String[] string = getResources().getStringArray(R.array.timeSettings);
 
 
-        adapter = ArrayAdapter.createFromResource(this, R.array.timeSettings, R.layout.spinner_choosen_item);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.timeSettings, R.layout.spinner_choosen_item);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinnerTime.setAdapter(adapter);
+        spinnerTime.setSelection(sharedPreferences.getInt(MainActivity.TIME_MODE, 0));
         spinnerTime.setOnItemSelectedListener(this);
 
 
@@ -43,8 +42,15 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        sharedPreferences.edit().putInt(MainActivity.TIME_MODE, i).apply();
-        Toast.makeText(this, String.valueOf(sharedPreferences.getInt(MainActivity.TIME_MODE, 0)), Toast.LENGTH_SHORT).show();
+        if (sharedPreferences.getInt(MainActivity.TIME_MODE, -1) == i) {
+            return;
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(MainActivity.TIME_MODE, i);
+            editor.putString(MainActivity.FIELD_STATE_PREFERENCE,MainActivity.PREFERENCE_EMPTY);
+            editor.apply();
+            Toast.makeText(this, String.valueOf(sharedPreferences.getInt(MainActivity.TIME_MODE, 0)), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

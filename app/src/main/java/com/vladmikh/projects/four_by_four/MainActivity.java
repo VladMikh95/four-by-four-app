@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TEN_MIN_VICTORY = "tenMinVictory";
     public static final String TEN_MIN_GAME = "tenMinGame";
 
-    private static final String PREFERENCE_EMPTY = "empty";
+    public static final String PREFERENCE_EMPTY = "empty";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         buttonResume = findViewById(R.id.buttonResume);
+        Log.i("abc", "main" + sharedPreferences.getString(MainActivity.FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY));
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         if (sharedPreferences.getString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).length() != 20) {
             buttonResume.setClickable(false);
             buttonResume.setBackgroundColor(getResources().getColor(R.color.LightGreen));

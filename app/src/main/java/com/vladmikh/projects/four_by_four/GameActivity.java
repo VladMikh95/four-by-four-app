@@ -50,7 +50,6 @@ public class GameActivity extends AppCompatActivity {
     private boolean isChosenFigure;
     private ImageView chosenFigure;
 
-    //private GameTimer countDownTimer;
     private Timer timer;
     private boolean isTimeRunning;
     private int timeToFinish;
@@ -90,30 +89,25 @@ public class GameActivity extends AppCompatActivity {
         textViewTimer = findViewById(R.id.textViewTimer);
 
         getFieldState();
-
-        isTimeRunning = true;
-        timeToFinish = 30;
-        Log.i("abc", String.valueOf(timeToFinish));
-        //countDownTimer = new GameTimer(30000, 1000);
-        //countDownTimer.start();
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        startTime();
-        //countDownTimer = new GameTimer(timeToFinish, 1000);
-        //countDownTimer.start();
-
+        if (preferences.getInt(MainActivity.TIME_MODE, 0) == 0) {
+            textViewTimer.setVisibility(View.INVISIBLE);
+        } else {
+            timeToFinish = preferences.getInt(TIME_TO_END_PREFERENCES, 1);
+            textViewTimer.setVisibility(View.VISIBLE);
+            startTime();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         saveFieldState();
-        preferences.edit().putLong(TIME_TO_END_PREFERENCES, timeToFinish).apply();
-        Log.i("abc", "onPause2" + preferences.getLong(TIME_TO_END_PREFERENCES, 0));
+        preferences.edit().putInt(TIME_TO_END_PREFERENCES, timeToFinish).apply();
         if (timer != null) {
             timer.cancel();
         }
@@ -130,6 +124,17 @@ public class GameActivity extends AppCompatActivity {
         }, 0, 1000);
     }
 
+    private void setStartTime(int timeMode) {
+        if (timeMode == 1) {
+            timeToFinish = 180;
+        } else if (timeMode == 2) {
+            timeToFinish = 300;
+        } else if (timeMode == 3) {
+            timeToFinish = 600;
+        }
+        preferences.edit().putInt(TIME_TO_END_PREFERENCES, timeToFinish).apply();
+    }
+
     private void timerMethod() {
         this.runOnUiThread(timerTick);
     }
@@ -143,11 +148,32 @@ public class GameActivity extends AppCompatActivity {
             int seconds = timeToFinish % 60;
             String time = String.format("%02d:%02d", minutes, seconds);
             textViewTimer.setText(time);
-            if (timeToFinish == 0) {
+            if (timeToFinish <= 0) {
                 timer.cancel();
             }
         }
     };
+
+    private void addCountGame(int timeMode) {
+        int countGame;
+        if (timeMode == 0) {
+            countGame = preferences.getInt(MainActivity.NO_TIME_LIMIT_GAME, 0);
+            countGame++;
+            preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_GAME, countGame).apply();
+        } else if (timeMode == 1) {
+            countGame = preferences.getInt(MainActivity.THREE_MIN_GAME, 0);
+            countGame++;
+            preferences.edit().putInt(MainActivity.THREE_MIN_GAME, countGame).apply();
+        } else if (timeMode == 2) {
+            countGame = preferences.getInt(MainActivity.FIVE_MIN_GAME, 0);
+            countGame++;
+            preferences.edit().putInt(MainActivity.FIVE_MIN_GAME, countGame).apply();
+        } else  {
+            countGame = preferences.getInt(MainActivity.TEN_MIN_GAME, 0);
+            countGame++;
+            preferences.edit().putInt(MainActivity.TEN_MIN_GAME, countGame).apply();
+        }
+    }
 
 
     private void startNewGame() {
@@ -207,7 +233,9 @@ public class GameActivity extends AppCompatActivity {
         imageView14.setImageDrawable(null);
         imageView14.setTag(TAG_IMAGE, 0);
 
-
+        int timeMode = preferences.getInt(MainActivity.TIME_MODE, 0);
+        addCountGame(timeMode);
+        setStartTime(timeMode);
     }
 
     private int determineColorId(int numOfColor) {
@@ -424,7 +452,7 @@ public class GameActivity extends AppCompatActivity {
                 chosenFigure.setTag(TAG_IMAGE, 0);
 
             }
-            chosenFigure.setBackgroundColor(getResources().getColor(R.color.white));
+            chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
             chosenFigure = null;
             isChosenFigure = false;
         }
@@ -439,46 +467,4 @@ public class GameActivity extends AppCompatActivity {
             imageView.setImageDrawable(null);
         }
     }
-
-
-
-    /*
-    private class GameTimer extends CountDownTimer {
-
-        //private long timeToFinish;
-
-        public GameTimer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-            //timeToFinish = millisInFuture;
-        }
-
-        @Override
-        public void onTick(long l) {
-            if (isTimeRunning) {
-                timeToFinish = l;
-                Log.i("abc", "timeToFinish" + timeToFinish);
-                int minutes = (int) (l / 60000);
-                int seconds = (int) (l % 60000 / 1000);
-                String time = String.format("%02d:%02d", minutes, seconds);
-                textViewTimer.setText(time);
-            } else {
-                countDownTimer.cancel();
-            }
-        }
-
-        @Override
-        public void onFinish() {
-            Toast.makeText(getApplicationContext(), "Время вышло!", Toast.LENGTH_SHORT).show();
-            textViewTimer.setText("00:00");
-            countDownTimer.cancel();
-        }
-
-
-        public long getTimeToFinish() {
-            return timeToFinish;
-        }
-    }*/
-
-
-
 }
