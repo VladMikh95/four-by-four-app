@@ -1,16 +1,20 @@
 package com.vladmikh.projects.four_by_four;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,8 +55,9 @@ public class GameActivity extends AppCompatActivity {
     private ImageView chosenFigure;
 
     private Timer timer;
-    private boolean isTimeRunning;
     private int timeToFinish;
+
+    private boolean isGameOver;
 
     private SharedPreferences preferences;
     private static final String PREFERENCE_EMPTY = "empty";
@@ -106,12 +111,15 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        saveFieldState();
-        preferences.edit().putInt(TIME_TO_END_PREFERENCES, timeToFinish).apply();
+        if (isGameOver) {
+            preferences.edit().putString(MainActivity.FIELD_STATE_PREFERENCE, MainActivity.PREFERENCE_EMPTY).apply();
+        } else {
+            saveFieldState();
+            preferences.edit().putInt(TIME_TO_END_PREFERENCES, timeToFinish).apply();
+        }
         if (timer != null) {
             timer.cancel();
         }
-        isTimeRunning = false;
     }
 
     private void startTime() {
@@ -142,7 +150,6 @@ public class GameActivity extends AppCompatActivity {
     private Runnable timerTick = new Runnable() {
         @Override
         public void run() {
-            Log.i("abc", String.valueOf(timeToFinish));
             timeToFinish--;
             int minutes = timeToFinish / 60;
             int seconds = timeToFinish % 60;
@@ -150,6 +157,8 @@ public class GameActivity extends AppCompatActivity {
             textViewTimer.setText(time);
             if (timeToFinish <= 0) {
                 timer.cancel();
+                isGameOver =true;
+                createAlertDialog(getResources().getString(R.string.message_lose));
             }
         }
     };
@@ -168,15 +177,37 @@ public class GameActivity extends AppCompatActivity {
             countGame = preferences.getInt(MainActivity.FIVE_MIN_GAME, 0);
             countGame++;
             preferences.edit().putInt(MainActivity.FIVE_MIN_GAME, countGame).apply();
-        } else  {
+        } else {
             countGame = preferences.getInt(MainActivity.TEN_MIN_GAME, 0);
             countGame++;
             preferences.edit().putInt(MainActivity.TEN_MIN_GAME, countGame).apply();
         }
     }
 
+    private void addCountVictory(int timeMode) {
+        int countVictory;
+        if (timeMode == 0) {
+            countVictory = preferences.getInt(MainActivity.NO_TIME_LIMIT_VICTORY, 0);
+            countVictory++;
+            preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_VICTORY, countVictory).apply();
+        } else if (timeMode == 1) {
+            countVictory = preferences.getInt(MainActivity.THREE_MIN_VICTORY, 0);
+            countVictory++;
+            preferences.edit().putInt(MainActivity.THREE_MIN_VICTORY, countVictory).apply();
+        } else if (timeMode == 2) {
+            countVictory = preferences.getInt(MainActivity.FIVE_MIN_VICTORY, 0);
+            countVictory++;
+            preferences.edit().putInt(MainActivity.FIVE_MIN_VICTORY, countVictory).apply();
+        } else {
+            countVictory = preferences.getInt(MainActivity.TEN_MIN_VICTORY, 0);
+            countVictory++;
+            preferences.edit().putInt(MainActivity.TEN_MIN_VICTORY, countVictory).apply();
+        }
+    }
+
 
     private void startNewGame() {
+        isGameOver = false;
         ArrayList<Integer> figuresColor = new ArrayList<>();
         int numImageView;
         ImageView imageView;
@@ -234,6 +265,7 @@ public class GameActivity extends AppCompatActivity {
         imageView14.setTag(TAG_IMAGE, 0);
 
         int timeMode = preferences.getInt(MainActivity.TIME_MODE, 0);
+        Log.i("abc", "time" + timeMode);
         addCountGame(timeMode);
         setStartTime(timeMode);
     }
@@ -278,7 +310,6 @@ public class GameActivity extends AppCompatActivity {
 
     //Метод сохраняет в SharedPreferences текущее состояние поля
     private void saveFieldState() {
-        Log.i("abc", "save" + preferences.getString(MainActivity.FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY));
         StringBuilder builder = new StringBuilder();
         int tagImage;
 
@@ -287,7 +318,6 @@ public class GameActivity extends AppCompatActivity {
             builder.append(determineNumColor(tagImage));
         }
         preferences.edit().putString(MainActivity.FIELD_STATE_PREFERENCE, builder.toString()).apply();
-        Log.i("abc", "save2" + preferences.getString(MainActivity.FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY));
 
     }
 
@@ -295,11 +325,10 @@ public class GameActivity extends AppCompatActivity {
     private void getFieldState() {
         String fieldState = preferences.getString(MainActivity.FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY);
         ImageView imageView;
-        Log.i("abc", "get" + fieldState);
         StringBuilder builder = new StringBuilder();
 
         if (fieldState.length() != 20) {
-            startNewGame();
+            testWin();
         } else {
             int tagImage;
             for (int i = 1; i <= 20; i++) {
@@ -311,8 +340,6 @@ public class GameActivity extends AppCompatActivity {
                 builder.append(determineNumColor((int) imageView.getTag(TAG_IMAGE)));
             }
         }
-        Log.i("abc", "get2" + builder.toString());
-
     }
 
     //Возвращает ImageView по числу
@@ -399,36 +426,69 @@ public class GameActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean isWin() {
-        boolean result = false;
+    private void isWin() {
+        String tagIm1 = String.valueOf(imageView1.getTag(TAG_IMAGE));
+        String tagIm3 = String.valueOf(imageView3.getTag(TAG_IMAGE));
+        String tagIm12 = String.valueOf(imageView12.getTag(TAG_IMAGE));
+        String tagIm15 = String.valueOf(imageView15.getTag(TAG_IMAGE));
 
-        if (imageView7 == null && imageView10 == null && imageView11 == null && imageView14 == null) {
-            if (imageView1.getDrawable().equals(imageView2.getDrawable())
-                    && imageView1.getDrawable().equals(imageView5.getDrawable())
-                    && imageView1.getDrawable().equals(imageView6.getDrawable())) {
+        if (imageView7.getDrawable() == null
+                && imageView10.getDrawable() == null
+                && imageView11.getDrawable() == null
+                && imageView14.getDrawable() == null
+                && tagIm1.equals(String.valueOf(imageView2.getTag(TAG_IMAGE)))
+                && tagIm1.equals(String.valueOf(imageView5.getTag(TAG_IMAGE)))
+                && tagIm1.equals(String.valueOf(imageView6.getTag(TAG_IMAGE)))
+                && tagIm3.equals(String.valueOf(imageView4.getTag(TAG_IMAGE)))
+                && tagIm3.equals(String.valueOf(imageView8.getTag(TAG_IMAGE)))
+                && tagIm3.equals(String.valueOf(imageView9.getTag(TAG_IMAGE)))
+                && tagIm12.equals(String.valueOf(imageView13.getTag(TAG_IMAGE)))
+                && tagIm12.equals(String.valueOf(imageView17.getTag(TAG_IMAGE)))
+                && tagIm12.equals(String.valueOf(imageView18.getTag(TAG_IMAGE)))
+                && tagIm15.equals(String.valueOf(imageView16.getTag(TAG_IMAGE)))
+                && tagIm15.equals(String.valueOf(imageView19.getTag(TAG_IMAGE)))
+                && tagIm15.equals(String.valueOf(imageView20.getTag(TAG_IMAGE)))) {
 
-                if (imageView3.getDrawable().equals(imageView4.getDrawable())
-                        && imageView3.getDrawable().equals(imageView8.getDrawable())
-                        && imageView3.getDrawable().equals(imageView9.getDrawable())) {
+            isGameOver = true;
+            addCountVictory(preferences.getInt(MainActivity.TIME_MODE, 0));
+            createAlertDialog(getResources().getString(R.string.message_win));
 
-                    if (imageView12.getDrawable().equals(imageView13.getDrawable())
-                            && imageView12.getDrawable().equals(imageView17.getDrawable())
-                            && imageView12.getDrawable().equals(imageView18.getDrawable())) {
-
-                        if (imageView15.getDrawable().equals(imageView15.getDrawable())
-                                && imageView15.getDrawable().equals(imageView19.getDrawable())
-                                && imageView15.getDrawable().equals(imageView20.getDrawable())) {
-
-                            result = true;
-
-                        }
-
-                    }
-                }
-            }
         }
+    }
 
-        return result;
+    private void createAlertDialog(String message) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_message, null);
+
+        builder.setView(dialogView);
+        TextView textViewMessageDialog = dialogView.findViewById(R.id.textViewDialogMessageTitle);
+        Button buttonMenu = dialogView.findViewById(R.id.buttonDialogMenu);
+        Button buttonNewGame = dialogView.findViewById(R.id.buttonDialogNewGame);
+        final AlertDialog dialog = builder.create();
+        
+        textViewMessageDialog.setText(message);
+
+        buttonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+                Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        buttonNewGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+                startNewGame();
+            }
+        });
+
+        dialog.show();
+
     }
 
     public void onClickChooseFigure(View view) {
@@ -450,6 +510,7 @@ public class GameActivity extends AppCompatActivity {
                 imageView.setTag(TAG_IMAGE, tagImage);
                 chosenFigure.setImageDrawable(null);
                 chosenFigure.setTag(TAG_IMAGE, 0);
+                isWin();
 
             }
             chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
@@ -458,13 +519,46 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void test1() {
+    private void testWin() {
         imageView1.setImageResource(R.drawable.color1);
-        ImageView imageView;
-
-        for (int i = 2; i <= 20; i++) {
-            imageView = determineImageView(i);
-            imageView.setImageDrawable(null);
-        }
+        imageView1.setTag(TAG_IMAGE, R.drawable.color1);
+        imageView2.setImageResource(R.drawable.color1);
+        imageView2.setTag(TAG_IMAGE, R.drawable.color1);
+        imageView5.setImageResource(R.drawable.color1);
+        imageView5.setTag(TAG_IMAGE, R.drawable.color1);
+        imageView6.setImageResource(R.drawable.color1);
+        imageView6.setTag(TAG_IMAGE, R.drawable.color1);
+        imageView3.setImageResource(R.drawable.color2);
+        imageView3.setTag(TAG_IMAGE, R.drawable.color2);
+        imageView4.setImageResource(R.drawable.color2);
+        imageView4.setTag(TAG_IMAGE, R.drawable.color2);
+        imageView8.setImageResource(R.drawable.color2);
+        imageView8.setTag(TAG_IMAGE, R.drawable.color2);
+        imageView9.setImageResource(R.drawable.color2);
+        imageView9.setTag(TAG_IMAGE, R.drawable.color2);
+        imageView12.setImageResource(R.drawable.color3);
+        imageView12.setTag(TAG_IMAGE, R.drawable.color3);
+        imageView13.setImageResource(R.drawable.color3);
+        imageView13.setTag(TAG_IMAGE, R.drawable.color3);
+        imageView17.setImageResource(R.drawable.color3);
+        imageView17.setTag(TAG_IMAGE, R.drawable.color3);
+        imageView18.setImageResource(R.drawable.color3);
+        imageView18.setTag(TAG_IMAGE, R.drawable.color3);
+        imageView11.setImageResource(R.drawable.color4);
+        imageView11.setTag(TAG_IMAGE, R.drawable.color4);
+        imageView14.setImageResource(R.drawable.color4);
+        imageView14.setTag(TAG_IMAGE, R.drawable.color4);
+        imageView16.setImageResource(R.drawable.color4);
+        imageView16.setTag(TAG_IMAGE, R.drawable.color4);
+        imageView20.setImageResource(R.drawable.color4);
+        imageView20.setTag(TAG_IMAGE, R.drawable.color4);
+        imageView7.setImageDrawable(null);
+        imageView7.setTag(TAG_IMAGE, 0);
+        imageView10.setImageDrawable(null);
+        imageView10.setTag(TAG_IMAGE, 0);
+        imageView15.setImageDrawable(null);
+        imageView15.setTag(TAG_IMAGE, 0);
+        imageView19.setImageDrawable(null);
+        imageView19.setTag(TAG_IMAGE, 0);
     }
 }

@@ -38,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         buttonResume = findViewById(R.id.buttonResume);
         Log.i("abc", "main" + sharedPreferences.getString(MainActivity.FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY));
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i("abc", "start");
         if (sharedPreferences.getString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).length() != 20) {
             buttonResume.setClickable(false);
             buttonResume.setBackgroundColor(getResources().getColor(R.color.LightGreen));
@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
             buttonResume.setClickable(true);
             buttonResume.setBackgroundColor(getResources().getColor(R.color.MediumSeaGreen));
         }
+        String s = sharedPreferences.getString(MainActivity.FIELD_STATE_PREFERENCE, "s");
+        Log.i("abc", s);
     }
 
     public void onClickPlayNewGame(View view) {
