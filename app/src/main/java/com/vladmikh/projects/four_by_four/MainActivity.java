@@ -21,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String TIME_MODE = "time_mode";
     public static final String NO_TIME_LIMIT_VICTORY = "noTimeLimitVictory";
     public static final String NO_TIME_LIMIT_GAME = "noTimeLimitGame";
+    public static final String ONE_MIN_VICTORY = "oneMinVictory";
+    public static final String ONE_MIN_GAME = "oneMinGame";
     public static final String THREE_MIN_VICTORY = "threeMinVictory";
     public static final String THREE_MIN_GAME = "threeMinGame";
     public static final String FIVE_MIN_VICTORY = "fiveMinVictory";
     public static final String FIVE_MIN_GAME = "fiveMinGame";
-    public static final String TEN_MIN_VICTORY = "tenMinVictory";
-    public static final String TEN_MIN_GAME = "tenMinGame";
 
     public static final String PREFERENCE_EMPTY = "empty";
 

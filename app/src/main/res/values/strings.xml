@@ -12,16 +12,16 @@
     <string name="textview_victory_label">Победы</string>
     <string name="textview_games_label">Игры</string>
     <string name="textview_percent_label">Процент побед</string>
+    <string name="textview_one_min">1 минута</string>
     <string name="textview_three_min">3 минуты</string>
     <string name="textview_five_min">5 минут</string>
-    <string name="textview_ten_min">10 минут</string>
     <string name="message_win">Вы выиграли!</string>
     <string name="message_lose">Вы проиграли</string>
     <string name="button_menu">Меню</string>
     <string-array name="timeSettings">
         <item name="no_time_limit">Без ограничений</item>
+        <item name="one_min">1 минута</item>
         <item name="three_min">3 минуты</item>
         <item name="five_min">5 минут</item>
-        <item name="ten_min">10 минут</item>
     </string-array>
 </resources>

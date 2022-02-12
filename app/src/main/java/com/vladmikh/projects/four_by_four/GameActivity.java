@@ -3,28 +3,20 @@ package com.vladmikh.projects.four_by_four;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.prefs.PreferenceChangeEvent;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -123,6 +115,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void startTime() {
+        if (timer != null) {
+            timer.cancel();
+        }
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -134,11 +129,11 @@ public class GameActivity extends AppCompatActivity {
 
     private void setStartTime(int timeMode) {
         if (timeMode == 1) {
-            timeToFinish = 180;
+            timeToFinish = 60;
         } else if (timeMode == 2) {
-            timeToFinish = 300;
+            timeToFinish = 180;
         } else if (timeMode == 3) {
-            timeToFinish = 600;
+            timeToFinish = 300;
         }
         preferences.edit().putInt(TIME_TO_END_PREFERENCES, timeToFinish).apply();
     }
@@ -170,17 +165,17 @@ public class GameActivity extends AppCompatActivity {
             countGame++;
             preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_GAME, countGame).apply();
         } else if (timeMode == 1) {
+            countGame = preferences.getInt(MainActivity.ONE_MIN_GAME, 0);
+            countGame++;
+            preferences.edit().putInt(MainActivity.ONE_MIN_GAME, countGame).apply();
+        } else if (timeMode == 2) {
             countGame = preferences.getInt(MainActivity.THREE_MIN_GAME, 0);
             countGame++;
             preferences.edit().putInt(MainActivity.THREE_MIN_GAME, countGame).apply();
-        } else if (timeMode == 2) {
+        } else {
             countGame = preferences.getInt(MainActivity.FIVE_MIN_GAME, 0);
             countGame++;
             preferences.edit().putInt(MainActivity.FIVE_MIN_GAME, countGame).apply();
-        } else {
-            countGame = preferences.getInt(MainActivity.TEN_MIN_GAME, 0);
-            countGame++;
-            preferences.edit().putInt(MainActivity.TEN_MIN_GAME, countGame).apply();
         }
     }
 
@@ -191,23 +186,28 @@ public class GameActivity extends AppCompatActivity {
             countVictory++;
             preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_VICTORY, countVictory).apply();
         } else if (timeMode == 1) {
+            countVictory = preferences.getInt(MainActivity.ONE_MIN_VICTORY, 0);
+            countVictory++;
+            preferences.edit().putInt(MainActivity.ONE_MIN_VICTORY, countVictory).apply();
+        } else if (timeMode == 2) {
             countVictory = preferences.getInt(MainActivity.THREE_MIN_VICTORY, 0);
             countVictory++;
             preferences.edit().putInt(MainActivity.THREE_MIN_VICTORY, countVictory).apply();
-        } else if (timeMode == 2) {
+        } else {
             countVictory = preferences.getInt(MainActivity.FIVE_MIN_VICTORY, 0);
             countVictory++;
             preferences.edit().putInt(MainActivity.FIVE_MIN_VICTORY, countVictory).apply();
-        } else {
-            countVictory = preferences.getInt(MainActivity.TEN_MIN_VICTORY, 0);
-            countVictory++;
-            preferences.edit().putInt(MainActivity.TEN_MIN_VICTORY, countVictory).apply();
         }
     }
 
 
     private void startNewGame() {
         isGameOver = false;
+        if (chosenFigure != null) {
+            chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
+            chosenFigure = null;
+            isChosenFigure = false;
+        }
         ArrayList<Integer> figuresColor = new ArrayList<>();
         int numImageView;
         ImageView imageView;
@@ -328,7 +328,7 @@ public class GameActivity extends AppCompatActivity {
         StringBuilder builder = new StringBuilder();
 
         if (fieldState.length() != 20) {
-            testWin();
+            startNewGame();
         } else {
             int tagImage;
             for (int i = 1; i <= 20; i++) {
@@ -484,10 +484,12 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dialog.cancel();
                 startNewGame();
+                startTime();
             }
         });
 
         dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
 
     }
 
@@ -501,6 +503,9 @@ public class GameActivity extends AppCompatActivity {
             }
 
         } else {
+            if (chosenFigure.getId() == imageView.getId()) {
+                return;
+            }
             if (chosenFigure.getId() != imageView.getId()
                     && imageView.getDrawable() == null
                     && isNearImageView(imageView, chosenFigure.getTag().toString())) {
@@ -508,14 +513,24 @@ public class GameActivity extends AppCompatActivity {
 
                 imageView.setImageResource(tagImage);
                 imageView.setTag(TAG_IMAGE, tagImage);
+                imageView.setBackgroundResource(R.drawable.chosen_field);
+                chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
                 chosenFigure.setImageDrawable(null);
                 chosenFigure.setTag(TAG_IMAGE, 0);
+                chosenFigure = imageView;
+                isChosenFigure = true;
                 isWin();
-
+                return;
             }
-            chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
-            chosenFigure = null;
-            isChosenFigure = false;
+            if (imageView.getDrawable() != null) {
+                chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
+                chosenFigure = imageView;
+                chosenFigure.setBackgroundResource(R.drawable.chosen_field);
+            } else {
+                chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
+                chosenFigure = null;
+                isChosenFigure = false;
+            }
         }
     }
 

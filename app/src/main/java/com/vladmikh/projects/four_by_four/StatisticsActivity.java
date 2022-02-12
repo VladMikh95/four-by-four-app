@@ -18,15 +18,15 @@ public class StatisticsActivity extends AppCompatActivity {
         TextView textViewNoTimeVictory = findViewById(R.id.textViewNoTimeVictory);
         TextView textViewNoTimeGame = findViewById(R.id.textViewNoTimeGame);
         TextView textViewNoTimePercent = findViewById(R.id.textViewNoTimePercent);
+        TextView textViewOneMinVictory = findViewById(R.id.textViewOneMinVictory);
+        TextView textViewOneMinGame = findViewById(R.id.textViewOneMinGame);
+        TextView textViewOneMinPercent = findViewById(R.id.textViewOneMinPercent);
         TextView textViewThreeMinVictory = findViewById(R.id.textViewThreeMinVictory);
         TextView textViewThreeMinGame = findViewById(R.id.textViewThreeMinGame);
         TextView textViewThreeMinPercent = findViewById(R.id.textViewThreeMinPercent);
         TextView textViewFiveMinVictory = findViewById(R.id.textViewFiveMinVictory);
         TextView textViewFiveMinGame = findViewById(R.id.textViewFiveMinGame);
         TextView textViewFiveMinPercent = findViewById(R.id.textViewFiveMinPercent);
-        TextView textViewTenMinVictory = findViewById(R.id.textViewTenMinVictory);
-        TextView textViewTenMinGame = findViewById(R.id.textViewTenMinGame);
-        TextView textViewTenMinPercent = findViewById(R.id.textViewTenMinPercent);
 
         int victory;
         int game;
@@ -38,6 +38,13 @@ public class StatisticsActivity extends AppCompatActivity {
         textViewNoTimeVictory.setText(String.valueOf(victory));
         textViewNoTimeGame.setText(String.valueOf(game));
         textViewNoTimePercent.setText(percent);
+
+        victory = sharedPreferences.getInt(MainActivity.ONE_MIN_VICTORY, 0);
+        game = sharedPreferences.getInt(MainActivity.ONE_MIN_GAME, 0);
+        percent = calculatePercent(victory, game) + " %";
+        textViewOneMinVictory.setText(String.valueOf(victory));
+        textViewOneMinGame.setText(String.valueOf(game));
+        textViewOneMinPercent.setText(percent);
 
         victory = sharedPreferences.getInt(MainActivity.THREE_MIN_VICTORY, 0);
         game = sharedPreferences.getInt(MainActivity.THREE_MIN_GAME, 0);
@@ -52,13 +59,6 @@ public class StatisticsActivity extends AppCompatActivity {
         textViewFiveMinVictory.setText(String.valueOf(victory));
         textViewFiveMinGame.setText(String.valueOf(game));
         textViewFiveMinPercent.setText(percent);
-
-        victory = sharedPreferences.getInt(MainActivity.TEN_MIN_VICTORY, 0);
-        game = sharedPreferences.getInt(MainActivity.TEN_MIN_GAME, 0);
-        percent = calculatePercent(victory, game) + " %";
-        textViewTenMinVictory.setText(String.valueOf(victory));
-        textViewTenMinGame.setText(String.valueOf(game));
-        textViewTenMinPercent.setText(percent);
 
     }
 

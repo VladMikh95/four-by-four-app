@@ -130,6 +130,101 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/textViewOneMinLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/textViewStatisticsModeLabel"
+        android:text="@string/textview_one_min"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardViewNoTimeLimit" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewOneMinLimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOneMinLimit">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/card_style">
+
+            <TextView
+                android:id="@+id/textViewOneMinVictoryLabel"
+                style="@style/textViewStatisticsItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_victory_label"
+                app:layout_constraintEnd_toStartOf="@+id/textViewOneMinGameLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewOneMinVictory"
+                style="@style/textViewStatisticsItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewOneMinGame"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewOneMinVictoryLabel" />
+
+            <TextView
+                android:id="@+id/textViewOneMinGameLabel"
+                style="@style/textViewStatisticsItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_games_label"
+                app:layout_constraintEnd_toStartOf="@+id/textViewOneMinPercentLabel"
+                app:layout_constraintStart_toEndOf="@+id/textViewOneMinVictoryLabel"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewOneMinGame"
+                style="@style/textViewStatisticsItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewOneMinPercent"
+                app:layout_constraintStart_toEndOf="@id/textViewOneMinVictory"
+                app:layout_constraintTop_toBottomOf="@id/textViewOneMinGameLabel" />
+
+            <TextView
+                android:id="@+id/textViewOneMinPercentLabel"
+                style="@style/textViewStatisticsItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_percent_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textViewOneMinGameLabel"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewOneMinPercent"
+                style="@style/textViewStatisticsItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textViewOneMinGame"
+                app:layout_constraintTop_toBottomOf="@id/textViewOneMinPercentLabel" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
         android:id="@+id/textViewThreeMinLimit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -137,7 +232,7 @@
         android:text="@string/textview_three_min"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardViewNoTimeLimit" />
+        app:layout_constraintTop_toBottomOf="@id/cardViewOneMinLimit" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewThreeMinLimit"
@@ -312,101 +407,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/textViewFiveMinGame"
                 app:layout_constraintTop_toBottomOf="@id/textViewFiveMinPercentLabel" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/textViewTenMinLimit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/textViewStatisticsModeLabel"
-        android:text="@string/textview_ten_min"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardViewFiveMinLimit" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewTenMinLimit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTenMinLimit">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/card_style">
-
-            <TextView
-                android:id="@+id/textViewTenMinVictoryLabel"
-                style="@style/textViewStatisticsItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/textview_victory_label"
-                app:layout_constraintEnd_toStartOf="@+id/textViewTenMinGameLabel"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewTenMinVictory"
-                style="@style/textViewStatisticsItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewTenMinGame"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewTenMinVictoryLabel" />
-
-            <TextView
-                android:id="@+id/textViewTenMinGameLabel"
-                style="@style/textViewStatisticsItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/textview_games_label"
-                app:layout_constraintEnd_toStartOf="@+id/textViewTenMinPercentLabel"
-                app:layout_constraintStart_toEndOf="@+id/textViewTenMinVictoryLabel"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewTenMinGame"
-                style="@style/textViewStatisticsItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textViewTenMinPercent"
-                app:layout_constraintStart_toEndOf="@id/textViewTenMinVictory"
-                app:layout_constraintTop_toBottomOf="@id/textViewTenMinGameLabel" />
-
-            <TextView
-                android:id="@+id/textViewTenMinPercentLabel"
-                style="@style/textViewStatisticsItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/textview_percent_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/textViewTenMinGameLabel"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewTenMinPercent"
-                style="@style/textViewStatisticsItem"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/textViewTenMinGame"
-                app:layout_constraintTop_toBottomOf="@id/textViewTenMinPercentLabel" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
