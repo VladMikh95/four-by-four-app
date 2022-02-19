@@ -9,63 +9,79 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/backstage_main"
         android:contentDescription="@string/imageview_backstage_content_description"
         android:scaleType="centerCrop"
+        android:src="@drawable/backstage_main"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/buttonNewGame"
-        style="@style/buttonStyle"
-        android:layout_marginTop="36dp"
-        android:onClick="onClickPlayNewGame"
-        android:text="@string/buttonNewGameText"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/buttonResume"
-        style="@style/buttonStyle"
-        android:text="@string/button_resume_text"
-        android:layout_marginTop="16dp"
-        android:onClick="onClickResume"
-        app:layout_constraintTop_toBottomOf="@id/buttonNewGame"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/buttonGameRules"
-        style="@style/buttonStyle"
-        android:text="@string/buttonGameRulesText"
-        android:onClick="onClickReadGameRules"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonResume" />
+            <Button
+                android:id="@+id/buttonNewGame"
+                style="@style/buttonStyle"
+                android:layout_marginTop="36dp"
+                android:onClick="onClickPlayNewGame"
+                android:text="@string/buttonNewGameText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonSetting"
-        style="@style/buttonStyle"
-        android:text="@string/botton_setting_text"
-        android:onClick="onClickSettings"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGameRules"/>
+            <Button
+                android:id="@+id/buttonResume"
+                style="@style/buttonStyle"
+                android:layout_marginTop="16dp"
+                android:onClick="onClickResume"
+                android:text="@string/button_resume_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonNewGame" />
 
-    <Button
-        android:id="@+id/buttonStatistics"
-        style="@style/buttonStyle"
-        android:text="@string/button_statistics_text"
-        android:onClick="onClickStatistics"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSetting"/>
+            <Button
+                android:id="@+id/buttonGameRules"
+                style="@style/buttonStyle"
+                android:layout_marginTop="16dp"
+                android:onClick="onClickReadGameRules"
+                android:text="@string/buttonGameRulesText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonResume" />
 
+            <Button
+                android:id="@+id/buttonSetting"
+                style="@style/buttonStyle"
+                android:layout_marginTop="16dp"
+                android:onClick="onClickSettings"
+                android:text="@string/botton_setting_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonGameRules" />
+
+            <Button
+                android:id="@+id/buttonStatistics"
+                style="@style/buttonStyle"
+                android:layout_marginTop="16dp"
+                android:onClick="onClickStatistics"
+                android:text="@string/button_statistics_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonSetting" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

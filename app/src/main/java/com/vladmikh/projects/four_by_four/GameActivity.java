@@ -6,6 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +56,13 @@ public class GameActivity extends AppCompatActivity {
 
     private boolean isGameOver;
 
+    private SoundPool soundPool;
+    private int soundIdClock;
+    private int soundIdFail;
+    private int soundIdMotion;
+    private int soundIdSuccess;
+    private int streamId;
+
     private SharedPreferences preferences;
     private static final String PREFERENCE_EMPTY = "empty";
     private static final int TAG_IMAGE = R.id.tagImage;
@@ -84,6 +96,19 @@ public class GameActivity extends AppCompatActivity {
         imageView19 = findViewById(R.id.imageView19);
         imageView20 = findViewById(R.id.imageView20);
         textViewTimer = findViewById(R.id.textViewTimer);
+
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .build();
+        soundIdClock = soundPool.load(this, R.raw.clock, 1);
+        soundIdFail = soundPool.load(this, R.raw.fail, 1);
+        soundIdMotion = soundPool.load(this, R.raw.motion, 1);
+        soundIdSuccess = soundPool.load(this, R.raw.success, 1);
+
 
         getFieldState();
     }
@@ -150,9 +175,14 @@ public class GameActivity extends AppCompatActivity {
             int seconds = timeToFinish % 60;
             String time = String.format("%02d:%02d", minutes, seconds);
             textViewTimer.setText(time);
+            if (timeToFinish < 10) {
+                textViewTimer.setTextColor(Color.RED);
+                playSound(soundIdClock);
+            }
             if (timeToFinish <= 0) {
                 timer.cancel();
                 isGameOver =true;
+                playSound(soundIdFail);
                 createAlertDialog(getResources().getString(R.string.message_lose));
             }
         }
@@ -200,9 +230,23 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    private void playSound(int soundId) {
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        float curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float leftVolume = curVolume / maxVolume;
+        float rightVolume = curVolume / maxVolume;
+        int priority = 1;
+        int no_loop = 0;
+        float normal_playback_rate = 1f;
+        streamId = soundPool.play(soundId, leftVolume, rightVolume, priority, no_loop,
+                normal_playback_rate);
+    }
+
 
     private void startNewGame() {
         isGameOver = false;
+        textViewTimer.setTextColor(Color.BLACK);
         if (chosenFigure != null) {
             chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
             chosenFigure = null;
@@ -451,7 +495,9 @@ public class GameActivity extends AppCompatActivity {
 
             isGameOver = true;
             addCountVictory(preferences.getInt(MainActivity.TIME_MODE, 0));
+            playSound(soundIdSuccess);
             createAlertDialog(getResources().getString(R.string.message_win));
+            timer.cancel();
 
         }
     }
@@ -467,6 +513,7 @@ public class GameActivity extends AppCompatActivity {
         Button buttonMenu = dialogView.findViewById(R.id.buttonDialogMenu);
         Button buttonNewGame = dialogView.findViewById(R.id.buttonDialogNewGame);
         final AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         
         textViewMessageDialog.setText(message);
 
@@ -500,6 +547,7 @@ public class GameActivity extends AppCompatActivity {
                 chosenFigure = imageView;
                 imageView.setBackgroundResource(R.drawable.chosen_field);
                 isChosenFigure = true;
+                playSound(soundIdMotion);
             }
 
         } else {
@@ -519,6 +567,7 @@ public class GameActivity extends AppCompatActivity {
                 chosenFigure.setTag(TAG_IMAGE, 0);
                 chosenFigure = imageView;
                 isChosenFigure = true;
+                playSound(soundIdMotion);
                 isWin();
                 return;
             }
@@ -526,6 +575,7 @@ public class GameActivity extends AppCompatActivity {
                 chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
                 chosenFigure = imageView;
                 chosenFigure.setBackgroundResource(R.drawable.chosen_field);
+                playSound(soundIdMotion);
             } else {
                 chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
                 chosenFigure = null;
