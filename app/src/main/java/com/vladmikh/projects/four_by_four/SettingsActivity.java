@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 
@@ -18,6 +20,8 @@ public class SettingsActivity extends AppCompatActivity
 
     private SharedPreferences sharedPreferences;
     private CustomSpinner spinnerTime;
+    private CustomSpinner spinnerGame;
+    private Switch switchSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,10 @@ public class SettingsActivity extends AppCompatActivity
         sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         spinnerTime = findViewById(R.id.spinnerTime);
         spinnerTime.setSpinnerEventsListener(this);
-        String[] string = getResources().getStringArray(R.array.timeSettings);
+
+        switchSound = findViewById(R.id.switchSettings);
+        switchSound.setChecked(sharedPreferences.getInt(MainActivity.TURNING_SOUND, 0) == 0);
+
 
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.timeSettings, R.layout.spinner_choosen_item);
@@ -35,7 +42,16 @@ public class SettingsActivity extends AppCompatActivity
         spinnerTime.setSelection(sharedPreferences.getInt(MainActivity.TIME_MODE, 0));
         spinnerTime.setOnItemSelectedListener(this);
 
-
+        switchSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    chooseSound(MainActivity.SOUND_ON);
+                } else {
+                    chooseSound(MainActivity.SOUND_OFF);
+                }
+            }
+        });
     }
 
 
@@ -67,4 +83,21 @@ public class SettingsActivity extends AppCompatActivity
     public void onPopupWindowClosed(Spinner spinner) {
         spinner.setBackground(getResources().getDrawable(R.drawable.spinner_time_style));
     }
+
+    private void chooseSound(int sound) {
+        sharedPreferences.edit().putInt(MainActivity.TURNING_SOUND, sound).apply();
+        String s = String.valueOf(sharedPreferences.getInt(MainActivity.TURNING_SOUND, 0));
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickSoundOff(View view) {
+        chooseSound(1);
+        switchSound.setChecked(false);
+    }
+
+    public void onClickSoundOn(View view) {
+        chooseSound(0);
+        switchSound.setChecked(true);
+    }
+
 }

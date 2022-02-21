@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String FIVE_MIN_VICTORY = "fiveMinVictory";
     public static final String FIVE_MIN_GAME = "fiveMinGame";
 
+    public static final String TURNING_SOUND = "turningSound";
+    public static final int SOUND_ON = 0;
+    public static final int SOUND_OFF = 1;
+
     public static final String PREFERENCE_EMPTY = "empty";
 
     @Override

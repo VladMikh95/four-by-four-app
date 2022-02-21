@@ -18,10 +18,19 @@
     <string name="message_win">Вы выиграли!</string>
     <string name="message_lose">Вы проиграли</string>
     <string name="button_menu">Меню</string>
+    <string name="textview_setting_time_mode">Время игры:</string>
+    <string name="textview_setting_game_mode">Режим игры:</string>
+    <string name="textview_settings_sound">Звук игры:</string>
+    <string name="textview_settings_off">Откл</string>
+    <string name="textview_settings_on">Вкл</string>
     <string-array name="timeSettings">
         <item name="no_time_limit">Без ограничений</item>
         <item name="one_min">1 минута</item>
         <item name="three_min">3 минуты</item>
         <item name="five_min">5 минут</item>
+    </string-array>
+    <string-array name="gameSettings">
+        <item name="simple">Простой</item>
+        <item name="partition_wall">С перегородкой</item>
     </string-array>
 </resources>

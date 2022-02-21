@@ -62,6 +62,7 @@ public class GameActivity extends AppCompatActivity {
     private int soundIdMotion;
     private int soundIdSuccess;
     private int streamId;
+    private int turningSound;
 
     private SharedPreferences preferences;
     private static final String PREFERENCE_EMPTY = "empty";
@@ -74,6 +75,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         preferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        turningSound  =preferences.getInt(MainActivity.TURNING_SOUND, 0);
 
         imageView1 = findViewById(R.id.imageView1);
         imageView2 = findViewById(R.id.imageView2);
@@ -143,13 +145,17 @@ public class GameActivity extends AppCompatActivity {
         if (timer != null) {
             timer.cancel();
         }
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                timerMethod();
-            }
-        }, 0, 1000);
+        if (isGameOver) {
+            return;
+        } else {
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    timerMethod();
+                }
+            }, 0, 1000);
+        }
     }
 
     private void setStartTime(int timeMode) {
@@ -177,12 +183,12 @@ public class GameActivity extends AppCompatActivity {
             textViewTimer.setText(time);
             if (timeToFinish < 10) {
                 textViewTimer.setTextColor(Color.RED);
-                playSound(soundIdClock);
+                playSound(soundIdClock, turningSound);
             }
             if (timeToFinish <= 0) {
                 timer.cancel();
                 isGameOver =true;
-                playSound(soundIdFail);
+                playSound(soundIdFail,turningSound);
                 createAlertDialog(getResources().getString(R.string.message_lose));
             }
         }
@@ -230,17 +236,19 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void playSound(int soundId) {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        float curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        float maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        float leftVolume = curVolume / maxVolume;
-        float rightVolume = curVolume / maxVolume;
-        int priority = 1;
-        int no_loop = 0;
-        float normal_playback_rate = 1f;
-        streamId = soundPool.play(soundId, leftVolume, rightVolume, priority, no_loop,
-                normal_playback_rate);
+    private void playSound(int soundId, int sound) {
+        if (sound == 0) {
+            AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            float curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            float maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            float leftVolume = curVolume / maxVolume;
+            float rightVolume = curVolume / maxVolume;
+            int priority = 1;
+            int no_loop = 0;
+            float normal_playback_rate = 1f;
+            streamId = soundPool.play(soundId, leftVolume, rightVolume, priority, no_loop,
+                    normal_playback_rate);
+        }
     }
 
 
@@ -495,7 +503,7 @@ public class GameActivity extends AppCompatActivity {
 
             isGameOver = true;
             addCountVictory(preferences.getInt(MainActivity.TIME_MODE, 0));
-            playSound(soundIdSuccess);
+            playSound(soundIdSuccess, turningSound);
             createAlertDialog(getResources().getString(R.string.message_win));
             timer.cancel();
 
@@ -536,6 +544,7 @@ public class GameActivity extends AppCompatActivity {
         });
 
         dialog.show();
+        dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
 
     }
@@ -547,7 +556,7 @@ public class GameActivity extends AppCompatActivity {
                 chosenFigure = imageView;
                 imageView.setBackgroundResource(R.drawable.chosen_field);
                 isChosenFigure = true;
-                playSound(soundIdMotion);
+                playSound(soundIdMotion, turningSound);
             }
 
         } else {
@@ -567,7 +576,7 @@ public class GameActivity extends AppCompatActivity {
                 chosenFigure.setTag(TAG_IMAGE, 0);
                 chosenFigure = imageView;
                 isChosenFigure = true;
-                playSound(soundIdMotion);
+                playSound(soundIdMotion, turningSound);
                 isWin();
                 return;
             }
@@ -575,7 +584,7 @@ public class GameActivity extends AppCompatActivity {
                 chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
                 chosenFigure = imageView;
                 chosenFigure.setBackgroundResource(R.drawable.chosen_field);
-                playSound(soundIdMotion);
+                playSound(soundIdMotion, turningSound);
             } else {
                 chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
                 chosenFigure = null;
