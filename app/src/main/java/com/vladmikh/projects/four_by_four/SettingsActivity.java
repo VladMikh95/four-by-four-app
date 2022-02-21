@@ -14,6 +14,10 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 
 public class SettingsActivity extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener, CustomSpinner.OnSpinnerEventsListener{
@@ -31,6 +35,9 @@ public class SettingsActivity extends AppCompatActivity
         spinnerTime = findViewById(R.id.spinnerTime);
         spinnerTime.setSpinnerEventsListener(this);
 
+        spinnerGame = findViewById(R.id.spinnerGame);
+        spinnerGame.setSpinnerEventsListener(this);
+
         switchSound = findViewById(R.id.switchSettings);
         switchSound.setChecked(sharedPreferences.getInt(MainActivity.TURNING_SOUND, 0) == 0);
 
@@ -41,6 +48,12 @@ public class SettingsActivity extends AppCompatActivity
         spinnerTime.setAdapter(adapter);
         spinnerTime.setSelection(sharedPreferences.getInt(MainActivity.TIME_MODE, 0));
         spinnerTime.setOnItemSelectedListener(this);
+
+        ArrayAdapter adapterGame = ArrayAdapter.createFromResource(this, R.array.gameSettings, R.layout.spinner_choosen_item);
+        adapterGame.setDropDownViewResource(R.layout.spinner_dropdown);
+        spinnerGame.setAdapter(adapterGame);
+        spinnerGame.setSelection(sharedPreferences.getInt(MainActivity.GAME_MODE, 0));
+        spinnerGame.setOnItemSelectedListener(this);
 
         switchSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -58,14 +71,11 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (sharedPreferences.getInt(MainActivity.TIME_MODE, -1) == i) {
-            return;
+
+        if (adapterView.equals(spinnerTime)) {
+            saveTimeMode(i);
         } else {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(MainActivity.TIME_MODE, i);
-            editor.putString(MainActivity.FIELD_STATE_PREFERENCE,MainActivity.PREFERENCE_EMPTY);
-            editor.apply();
-            Toast.makeText(this, String.valueOf(sharedPreferences.getInt(MainActivity.TIME_MODE, 0)), Toast.LENGTH_SHORT).show();
+           saveGameMode(i);
         }
     }
 
@@ -88,6 +98,30 @@ public class SettingsActivity extends AppCompatActivity
         sharedPreferences.edit().putInt(MainActivity.TURNING_SOUND, sound).apply();
         String s = String.valueOf(sharedPreferences.getInt(MainActivity.TURNING_SOUND, 0));
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveTimeMode(int i) {
+        if (sharedPreferences.getInt(MainActivity.TIME_MODE, -1) == i) {
+            return;
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(MainActivity.TIME_MODE, i);
+            editor.putString(MainActivity.FIELD_STATE_PREFERENCE,MainActivity.PREFERENCE_EMPTY);
+            editor.apply();
+            Toast.makeText(this, String.valueOf(sharedPreferences.getInt(MainActivity.TIME_MODE, 0)), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void saveGameMode(int i) {
+        if (sharedPreferences.getInt(MainActivity.GAME_MODE, -1) == i) {
+            return;
+        } else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(MainActivity.GAME_MODE, i);
+            editor.putString(MainActivity.FIELD_STATE_PREFERENCE,MainActivity.PREFERENCE_EMPTY);
+            editor.apply();
+            Toast.makeText(this, sharedPreferences.getInt(MainActivity.GAME_MODE, 0) + "abc", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onClickSoundOff(View view) {

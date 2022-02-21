@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fourbyfour">
-        <activity android:name=".StatisticsActivity"></activity>
+        <activity android:name=".GamePartitionActivity"></activity>
+        <activity android:name=".StatisticsActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".GameActivity" />
         <activity android:name=".GameRulesActivity" />

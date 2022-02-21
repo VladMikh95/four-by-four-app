@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int SOUND_ON = 0;
     public static final int SOUND_OFF = 1;
 
+    public static final String GAME_MODE = "game_mode";
+
     public static final String PREFERENCE_EMPTY = "empty";
 
     @Override
@@ -48,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i("abc", "start");
-        if (sharedPreferences.getString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).length() != 20) {
-            buttonResume.setClickable(false);
-            buttonResume.setBackgroundColor(getResources().getColor(R.color.LightGreen));
-        } else {
+        if (sharedPreferences.getString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).length() == 20) {
             buttonResume.setClickable(true);
             buttonResume.setBackgroundColor(getResources().getColor(R.color.MediumSeaGreen));
+        } else {
+            buttonResume.setClickable(false);
+            buttonResume.setBackgroundColor(getResources().getColor(R.color.LightGreen));
         }
         String s = sharedPreferences.getString(MainActivity.FIELD_STATE_PREFERENCE, "s");
         Log.i("abc", s);
@@ -61,7 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickPlayNewGame(View view) {
         sharedPreferences.edit().putString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).apply();
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent;
+        if (sharedPreferences.getInt(MainActivity.GAME_MODE, 0)== 0) {
+            intent = new Intent(this, GameActivity.class);
+        } else {
+            intent = new Intent(this, GamePartitionActivity.class);
+        }
         startActivity(intent);
     }
 
@@ -71,7 +78,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickResume(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent;
+        if (sharedPreferences.getInt(MainActivity.GAME_MODE, 0)== 0) {
+            intent = new Intent(this, GameActivity.class);
+        } else {
+            intent = new Intent(this, GamePartitionActivity.class);
+        }
         startActivity(intent);
     }
 
