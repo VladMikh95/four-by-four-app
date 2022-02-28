@@ -28,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
     public static final String FIVE_MIN_VICTORY = "fiveMinVictory";
     public static final String FIVE_MIN_GAME = "fiveMinGame";
 
+    public static final String NO_TIME_LIMIT_VICTORY_PARTITION = "noTimeLimitVictoryPartition";
+    public static final String NO_TIME_LIMIT_GAME_PARTITION = "noTimeLimitGamePartition";
+    public static final String ONE_MIN_VICTORY_PARTITION = "oneMinVictoryPartition";
+    public static final String ONE_MIN_GAME_PARTITION = "oneMinGamePartition";
+    public static final String THREE_MIN_VICTORY_PARTITION = "threeMinVictoryPartition";
+    public static final String THREE_MIN_GAME_PARTITION = "threeMinGamePartition";
+    public static final String FIVE_MIN_VICTORY_PARTITION = "fiveMinVictoryPartition";
+    public static final String FIVE_MIN_GAME_PARTITION = "fiveMinGamePartition";
+
     public static final String TURNING_SOUND = "turningSound";
     public static final int SOUND_ON = 0;
     public static final int SOUND_OFF = 1;

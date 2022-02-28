@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:circularflow_radiusInDP="16dp"
-    tools:context=".SettingsActivity">
+    tools:context=".StatisticsActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -25,13 +25,23 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <Switch
+                android:id="@+id/switchStatistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textViewNoTimeLimit"
+                app:layout_constraintTop_toBottomOf="@+id/textViewStatisticsTitle" />
 
             <TextView
                 android:id="@+id/textViewStatisticsTitle"
@@ -46,14 +56,69 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textViewNoTimeLimit"
+                android:id="@+id/textViewStatisticsSimple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:onClick="onClickSimple"
+                android:text="@string/textview_statistics_simple"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/switchStatistics"
+                app:layout_constraintEnd_toStartOf="@+id/switchStatistics"
+                app:layout_constraintTop_toBottomOf="@+id/textViewStatisticsTitle" />
+
+            <TextView
+                android:id="@+id/textViewStatisticsPartition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="@string/textview_partition_wall"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:onClick="onClickPartition"
+                app:layout_constraintStart_toEndOf="@id/switchStatistics"
+                app:layout_constraintTop_toBottomOf="@id/textViewStatisticsTitle" />
+
+            <TextView
+                android:id="@+id/textViewNoTimeLimit"
                 style="@style/textViewStatisticsModeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/textview_no_time_limit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewStatisticsTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/switchStatistics" />
+
+            <TextView
+                android:id="@+id/textViewOneMinLimit"
+                style="@style/textViewStatisticsModeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_one_min"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardViewNoTimeLimit" />
+
+            <TextView
+                android:id="@+id/textViewThreeMinLimit"
+                style="@style/textViewStatisticsModeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_three_min"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardViewOneMinLimit" />
+
+            <TextView
+                android:id="@+id/textViewFiveMinLimit"
+                style="@style/textViewStatisticsModeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textview_five_min"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardViewThreeMinLimit" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewNoTimeLimit"
@@ -87,9 +152,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="0"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/textViewNoTimeGame"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/textViewNoTimeVictoryLabel" />
 
                     <TextView
@@ -139,16 +204,6 @@
 
 
             </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textViewOneMinLimit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/textViewStatisticsModeLabel"
-                android:text="@string/textview_one_min"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardViewNoTimeLimit" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewOneMinLimit"
@@ -235,16 +290,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/textViewThreeMinLimit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/textViewStatisticsModeLabel"
-                android:text="@string/textview_three_min"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardViewOneMinLimit" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewThreeMinLimit"
                 android:layout_width="match_parent"
@@ -330,16 +375,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/textViewFiveMinLimit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/textViewStatisticsModeLabel"
-                android:text="@string/textview_five_min"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardViewThreeMinLimit" />
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewFiveMinLimit"
                 android:layout_width="match_parent"
@@ -347,10 +382,10 @@
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="@android:color/transparent"
                 app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewFiveMinLimit"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/textViewFiveMinLimit">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

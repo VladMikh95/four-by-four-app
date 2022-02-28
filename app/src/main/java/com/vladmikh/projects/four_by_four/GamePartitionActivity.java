@@ -195,42 +195,42 @@ public class GamePartitionActivity extends AppCompatActivity {
     private void addCountGame(int timeMode) {
         int countGame;
         if (timeMode == 0) {
-            countGame = preferences.getInt(MainActivity.NO_TIME_LIMIT_GAME, 0);
+            countGame = preferences.getInt(MainActivity.NO_TIME_LIMIT_GAME_PARTITION, 0);
             countGame++;
-            preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_GAME, countGame).apply();
+            preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_GAME_PARTITION, countGame).apply();
         } else if (timeMode == 1) {
-            countGame = preferences.getInt(MainActivity.ONE_MIN_GAME, 0);
+            countGame = preferences.getInt(MainActivity.ONE_MIN_GAME_PARTITION, 0);
             countGame++;
-            preferences.edit().putInt(MainActivity.ONE_MIN_GAME, countGame).apply();
+            preferences.edit().putInt(MainActivity.ONE_MIN_GAME_PARTITION, countGame).apply();
         } else if (timeMode == 2) {
-            countGame = preferences.getInt(MainActivity.THREE_MIN_GAME, 0);
+            countGame = preferences.getInt(MainActivity.THREE_MIN_GAME_PARTITION, 0);
             countGame++;
-            preferences.edit().putInt(MainActivity.THREE_MIN_GAME, countGame).apply();
+            preferences.edit().putInt(MainActivity.THREE_MIN_GAME_PARTITION, countGame).apply();
         } else {
-            countGame = preferences.getInt(MainActivity.FIVE_MIN_GAME, 0);
+            countGame = preferences.getInt(MainActivity.FIVE_MIN_GAME_PARTITION, 0);
             countGame++;
-            preferences.edit().putInt(MainActivity.FIVE_MIN_GAME, countGame).apply();
+            preferences.edit().putInt(MainActivity.FIVE_MIN_GAME_PARTITION, countGame).apply();
         }
     }
 
     private void addCountVictory(int timeMode) {
         int countVictory;
         if (timeMode == 0) {
-            countVictory = preferences.getInt(MainActivity.NO_TIME_LIMIT_VICTORY, 0);
+            countVictory = preferences.getInt(MainActivity.NO_TIME_LIMIT_VICTORY_PARTITION, 0);
             countVictory++;
-            preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_VICTORY, countVictory).apply();
+            preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_VICTORY_PARTITION, countVictory).apply();
         } else if (timeMode == 1) {
-            countVictory = preferences.getInt(MainActivity.ONE_MIN_VICTORY, 0);
+            countVictory = preferences.getInt(MainActivity.ONE_MIN_VICTORY_PARTITION, 0);
             countVictory++;
-            preferences.edit().putInt(MainActivity.ONE_MIN_VICTORY, countVictory).apply();
+            preferences.edit().putInt(MainActivity.ONE_MIN_VICTORY_PARTITION, countVictory).apply();
         } else if (timeMode == 2) {
-            countVictory = preferences.getInt(MainActivity.THREE_MIN_VICTORY, 0);
+            countVictory = preferences.getInt(MainActivity.THREE_MIN_VICTORY_PARTITION, 0);
             countVictory++;
-            preferences.edit().putInt(MainActivity.THREE_MIN_VICTORY, countVictory).apply();
+            preferences.edit().putInt(MainActivity.THREE_MIN_VICTORY_PARTITION, countVictory).apply();
         } else {
-            countVictory = preferences.getInt(MainActivity.FIVE_MIN_VICTORY, 0);
+            countVictory = preferences.getInt(MainActivity.FIVE_MIN_VICTORY_PARTITION, 0);
             countVictory++;
-            preferences.edit().putInt(MainActivity.FIVE_MIN_VICTORY, countVictory).apply();
+            preferences.edit().putInt(MainActivity.FIVE_MIN_VICTORY_PARTITION, countVictory).apply();
         }
     }
 
@@ -504,7 +504,9 @@ public class GamePartitionActivity extends AppCompatActivity {
             addCountVictory(preferences.getInt(MainActivity.TIME_MODE, 0));
             playSound(soundIdSuccess, turningSound);
             createAlertDialog(getResources().getString(R.string.message_win));
-            timer.cancel();
+            if (timer != null) {
+                timer.cancel();
+            }
 
         }
     }

@@ -505,7 +505,9 @@ public class GameActivity extends AppCompatActivity {
             addCountVictory(preferences.getInt(MainActivity.TIME_MODE, 0));
             playSound(soundIdSuccess, turningSound);
             createAlertDialog(getResources().getString(R.string.message_win));
-            timer.cancel();
+            if (timer != null) {
+                timer.cancel();
+            }
 
         }
     }
