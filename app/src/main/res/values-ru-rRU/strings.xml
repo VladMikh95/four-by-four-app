@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">four-by-four</string>
+    <string name="buttonNewGameText">Новая игра</string>
+    <string name="buttonGameRulesText">Правила игры</string>
+    <string name="imageView_empty">пусто</string>
+    <string name="button_resume_text">Продолжить</string>
+    <string name="botton_setting_text">Настройки</string>
+    <string name="button_statistics_text">Статистика</string>
+    <string name="imageview_backstage_content_description">Заставка</string>
+    <string name="textview_statistics_title">Режим игры</string>
+    <string name="textview_no_time_limit">Без ограничения времени</string>
+    <string name="textview_victory_label">Победы</string>
+    <string name="textview_games_label">Игры</string>
+    <string name="textview_percent_label">Процент побед</string>
+    <string name="textview_one_min">1 минута</string>
+    <string name="textview_three_min">3 минуты</string>
+    <string name="textview_five_min">5 минут</string>
+    <string name="message_win">Вы выиграли!</string>
+    <string name="message_lose">Вы проиграли</string>
+    <string name="button_menu">Меню</string>
+    <string name="textview_setting_time_mode">Время игры:</string>
+    <string name="textview_setting_game_mode">Режим игры:</string>
+    <string name="textview_settings_sound">Звук игры:</string>
+    <string name="textview_settings_off">Выкл</string>
+    <string name="textview_settings_on">Вкл</string>
+    <string name="textview_game_rules_one">Данная игра развивает логику, сообразительность и память. В настройках игры можно установить таймер. Вариации тайминга: 1 минута, 3 минуты, 5 минут. Также есть возможность играть без ограничения по времени. Есть 2 режима игры: простой и с перегородкой.</string>
+    <string name="textview_game_rules_two">После старта игры на игровом поле появляется 16 фишек 4 различных цветов. Игровое поле поделено на 4 сектора.</string>
+    <string name="textview_game_rules_three">Задача игрока - разместить в каждом из 4 секторов фишки одинакового цвета</string>
+    <string name="textview_statistics_simple">Простой</string>
+    <string name="textview_partition_wall">С перегородкой</string>
+</resources>
