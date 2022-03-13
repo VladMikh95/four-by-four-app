@@ -29,13 +29,13 @@
     <string name="textview_statistics_simple">Simple</string>
     <string name="textview_partition_wall">With a partition wall</string>
     <string-array name="timeSettings">
-        <item name="no_time_limit">Без ограничений</item>
-        <item name="one_min">1 минута</item>
-        <item name="three_min">3 минуты</item>
-        <item name="five_min">5 минут</item>
+        <item>@string/textview_no_time_limit</item>
+        <item>@string/textview_one_min</item>
+        <item>@string/textview_three_min</item>
+        <item>@string/textview_five_min</item>
     </string-array>
     <string-array name="gameSettings">
-        <item name="simple">Простой</item>
-        <item name="partition_wall">С перегородкой</item>
+        <item>@string/textview_statistics_simple</item>
+        <item>@string/textview_partition_wall</item>
     </string-array>
 </resources>

@@ -15,10 +15,16 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -65,18 +71,54 @@ public class GameActivity extends AppCompatActivity {
     private int streamId;
     private int turningSound;
 
+    private boolean isAdBackNewGame; //Используется для определения какая активность будет открыта после нажатия крестика у рекламы
+
     private SharedPreferences preferences;
     private static final String PREFERENCE_EMPTY = "empty";
     private static final int TAG_IMAGE = R.id.tagImage;
     private static final String TIME_TO_END_PREFERENCES = "timeToEnd";
 
+    private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913";
+    private static final String AD_BLOCK_ID = "ca-app-pub-8930311370509397/4758474259";
+
+    public InterstitialAd interstitialAd; //Реклама
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        //Реклама начало
+        MobileAds.initialize(this, APPLICATION_ID);
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(AD_BLOCK_ID);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
+        //Реклама конец
+
+        //Закрытие рекламы на крестик - начало
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                try {
+                    if (isAdBackNewGame) {
+                        startNewGame();
+                        startTime();
+                    } else {
+                        Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    //пусто
+                }
+            }
+        });
+        //Закрытие рекламы на крестик - конец
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
 
+        actionBar.setDisplayHomeAsUpEnabled(true);
         preferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         turningSound  =preferences.getInt(MainActivity.TURNING_SOUND, 0);
 
@@ -117,6 +159,7 @@ public class GameActivity extends AppCompatActivity {
 
         getFieldState();
     }
+
 
     @Override
     protected void onResume() {
@@ -533,9 +576,16 @@ public class GameActivity extends AppCompatActivity {
         buttonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 dialog.cancel();
-                Intent intent = new Intent(GameActivity.this, MainActivity.class);
-                startActivity(intent);
+                if(interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                    isAdBackNewGame = false;
+                } else {
+                    Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                dialog.cancel();
             }
         });
 
@@ -543,8 +593,13 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
-                startNewGame();
-                startTime();
+                if (interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                    isAdBackNewGame = true;
+                } else {
+                    startNewGame();
+                    startTime();
+                }
             }
         });
 

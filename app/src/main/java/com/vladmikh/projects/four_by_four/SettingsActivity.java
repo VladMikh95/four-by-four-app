@@ -12,11 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 public class SettingsActivity extends AppCompatActivity
@@ -97,7 +92,6 @@ public class SettingsActivity extends AppCompatActivity
     private void chooseSound(int sound) {
         sharedPreferences.edit().putInt(MainActivity.TURNING_SOUND, sound).apply();
         String s = String.valueOf(sharedPreferences.getInt(MainActivity.TURNING_SOUND, 0));
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     private void saveTimeMode(int i) {
@@ -108,7 +102,6 @@ public class SettingsActivity extends AppCompatActivity
             editor.putInt(MainActivity.TIME_MODE, i);
             editor.putString(MainActivity.FIELD_STATE_PREFERENCE,MainActivity.PREFERENCE_EMPTY);
             editor.apply();
-            Toast.makeText(this, String.valueOf(sharedPreferences.getInt(MainActivity.TIME_MODE, 0)), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -120,7 +113,6 @@ public class SettingsActivity extends AppCompatActivity
             editor.putInt(MainActivity.GAME_MODE, i);
             editor.putString(MainActivity.FIELD_STATE_PREFERENCE,MainActivity.PREFERENCE_EMPTY);
             editor.apply();
-            Toast.makeText(this, sharedPreferences.getInt(MainActivity.GAME_MODE, 0) + "abc", Toast.LENGTH_SHORT).show();
         }
     }
 
