@@ -1,5 +1,6 @@
 package com.vladmikh.projects.four_by_four;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,10 +17,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -88,6 +91,25 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        //Делаем панель иструментов в качестве панели приложения
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Обработка нажатия кнопки назад в toolbar
+        Button buttonBackToolbar = toolbar.findViewById(R.id.buttonBackToolbar);
+        buttonBackToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
+                    isAdBackNewGame = false;
+                    interstitialAd.show();
+                } else {
+                    Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
         //Реклама начало
         MobileAds.initialize(this, APPLICATION_ID);
         interstitialAd = new InterstitialAd(this);
@@ -115,10 +137,6 @@ public class GameActivity extends AppCompatActivity {
         });
         //Закрытие рекламы на крестик - конец
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-
-        actionBar.setDisplayHomeAsUpEnabled(true);
         preferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         turningSound  =preferences.getInt(MainActivity.TURNING_SOUND, 0);
 
@@ -578,9 +596,9 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 dialog.cancel();
-                if(interstitialAd.isLoaded()) {
-                    interstitialAd.show();
+                if(interstitialAd.isLoaded()) { //Проверка загрузки реклами
                     isAdBackNewGame = false;
+                    interstitialAd.show();
                 } else {
                     Intent intent = new Intent(GameActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -593,9 +611,9 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
-                if (interstitialAd.isLoaded()) {
-                    interstitialAd.show();
+                if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
                     isAdBackNewGame = true;
+                    interstitialAd.show();
                 } else {
                     startNewGame();
                     startTime();

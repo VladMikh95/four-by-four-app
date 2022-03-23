@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">four-by-four</string>
+    <string name="app_name">Four by Four</string>
     <string name="buttonNewGameText">Новая игра</string>
     <string name="buttonGameRulesText">Правила игры</string>
     <string name="imageView_empty">пусто</string>
@@ -29,4 +29,5 @@
     <string name="textview_game_rules_three">Задача игрока - разместить в каждом из 4 секторов фишки одинакового цвета</string>
     <string name="textview_statistics_simple">Простой</string>
     <string name="textview_partition_wall">С перегородкой</string>
+    <string name="text_my_menu_button">Назад</string>
 </resources>

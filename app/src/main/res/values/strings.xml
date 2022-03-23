@@ -28,6 +28,7 @@
     <string name="textview_game_rules_three">The player\'s task is to place chips of the same color in each of the 4 sectors.</string>
     <string name="textview_statistics_simple">Simple</string>
     <string name="textview_partition_wall">With a partition wall</string>
+    <string name="text_my_menu_button">Back</string>
     <string-array name="timeSettings">
         <item>@string/textview_no_time_limit</item>
         <item>@string/textview_one_min</item>
