@@ -59,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
         buttonResume = findViewById(R.id.buttonResume);
     }
 
+    //Exiting the application
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
