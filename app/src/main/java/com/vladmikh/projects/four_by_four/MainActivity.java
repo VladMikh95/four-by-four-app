@@ -1,6 +1,7 @@
 package com.vladmikh.projects.four_by_four;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -50,9 +51,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Делаем панель иструментов в качестве панели приложения
+        Toolbar toolbar = findViewById(R.id.toolbarMain);
+        setSupportActionBar(toolbar);
+
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         buttonResume = findViewById(R.id.buttonResume);
-        Log.i("abc", "main" + sharedPreferences.getString(MainActivity.FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY));
     }
 
     @Override
