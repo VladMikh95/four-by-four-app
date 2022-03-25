@@ -3,6 +3,7 @@ package com.vladmikh.projects.four_by_four;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -64,6 +70,12 @@ public class GamePartitionActivity extends AppCompatActivity {
     private int streamId;
     private int turningSound;
 
+    private boolean isAdBackNewGame; //Используется для определения какая активность будет открыта после нажатия крестика у рекламы
+    private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913";
+    private static final String AD_BLOCK_ID = "ca-app-pub-8930311370509397/4758474259";
+
+    public InterstitialAd interstitialAd; //Реклама
+
     private SharedPreferences preferences;
     private static final String PREFERENCE_EMPTY = "empty";
     private static final int TAG_IMAGE = R.id.tagImage;
@@ -73,8 +85,51 @@ public class GamePartitionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_partition);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        //Делаем панель иструментов в качестве панели приложения
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Обработка нажатия кнопки назад в toolbar
+        Button buttonBackToolbar = toolbar.findViewById(R.id.buttonBackToolbar);
+        buttonBackToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
+                    isAdBackNewGame = false;
+                    interstitialAd.show();
+                } else {
+                    Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        //Реклама начало
+        MobileAds.initialize(this, APPLICATION_ID);
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(AD_BLOCK_ID);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        interstitialAd.loadAd(adRequest);
+        //Реклама конец
+
+        //Закрытие рекламы на крестик - начало
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                try {
+                    if (isAdBackNewGame) {
+                        startNewGame();
+                        startTime();
+                    } else {
+                        Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    //пусто
+                }
+            }
+        });
+        //Закрытие рекламы на крестик - конец
 
 
         preferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
@@ -534,8 +589,13 @@ public class GamePartitionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
-                Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
-                startActivity(intent);
+                if(interstitialAd.isLoaded()) { //Проверка загрузки реклами
+                    isAdBackNewGame = false;
+                    interstitialAd.show();
+                } else {
+                    Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -543,8 +603,13 @@ public class GamePartitionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
-                startNewGame();
-                startTime();
+                if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
+                    isAdBackNewGame = true;
+                    interstitialAd.show();
+                } else {
+                    startNewGame();
+                    startTime();
+                }
             }
         });
 

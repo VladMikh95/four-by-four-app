@@ -604,7 +604,6 @@ public class GameActivity extends AppCompatActivity {
                     Intent intent = new Intent(GameActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
-                dialog.cancel();
             }
         });
 
