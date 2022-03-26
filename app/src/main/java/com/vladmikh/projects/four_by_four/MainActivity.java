@@ -11,9 +11,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button buttonResume;
+
+    private AdView adView; //переменная для баннера
+    private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913"; //идентификатор приложения
 
     private SharedPreferences sharedPreferences;
 
@@ -50,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Подключение рекламного баннера - начало
+        MobileAds.initialize(this, APPLICATION_ID);
+        adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+        //Подключение рекламного баннера - конец
 
         //Делаем панель иструментов в качестве панели приложения
         Toolbar toolbar = findViewById(R.id.toolbarMain);
