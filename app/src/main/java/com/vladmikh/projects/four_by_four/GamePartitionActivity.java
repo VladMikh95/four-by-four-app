@@ -1,5 +1,6 @@
 package com.vladmikh.projects.four_by_four;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+//import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -74,7 +81,7 @@ public class GamePartitionActivity extends AppCompatActivity {
     private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913";
     private static final String AD_BLOCK_ID = "ca-app-pub-8930311370509397/4758474259";
 
-    public InterstitialAd interstitialAd; //Реклама
+    public InterstitialAd mInterstitialAd; //Реклама
 
     private SharedPreferences preferences;
     private static final String PREFERENCE_EMPTY = "empty";
@@ -94,6 +101,25 @@ public class GamePartitionActivity extends AppCompatActivity {
         buttonBackToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(GamePartitionActivity.this);
+
+                    //Действия которые происходят при нажатии крестика у рекламы
+                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when fullscreen content is dismissed.
+                            Log.d("TAG", "The ad was dismissed.");
+                            Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                    Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                /*
                 if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
                     isAdBackNewGame = false;
                     interstitialAd.show();
@@ -101,18 +127,45 @@ public class GamePartitionActivity extends AppCompatActivity {
                     Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
+                 */
             }
         });
 
         //Реклама начало
+        /*
         MobileAds.initialize(this, APPLICATION_ID);
         interstitialAd = new InterstitialAd(this);
         interstitialAd.setAdUnitId(AD_BLOCK_ID);
         AdRequest adRequest = new AdRequest.Builder().build();
         interstitialAd.loadAd(adRequest);
+         */
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,AD_BLOCK_ID, adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("TAG", "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("TAG", loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
         //Реклама конец
 
         //Закрытие рекламы на крестик - начало
+        /*
         interstitialAd.setAdListener(new AdListener(){
             @Override
             public void onAdClosed() {
@@ -129,6 +182,8 @@ public class GamePartitionActivity extends AppCompatActivity {
                 }
             }
         });
+
+         */
         //Закрытие рекламы на крестик - конец
 
 
@@ -589,6 +644,23 @@ public class GamePartitionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(GamePartitionActivity.this);
+                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when fullscreen content is dismissed.
+                            Log.d("TAG", "The ad was dismissed.");
+                            Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                    Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                /*
                 if(interstitialAd.isLoaded()) { //Проверка загрузки реклами
                     isAdBackNewGame = false;
                     interstitialAd.show();
@@ -596,6 +668,8 @@ public class GamePartitionActivity extends AppCompatActivity {
                     Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
+
+                 */
             }
         });
 
@@ -603,6 +677,23 @@ public class GamePartitionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(GamePartitionActivity.this);
+                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when fullscreen content is dismissed.
+                            Log.d("TAG", "The ad was dismissed.");
+                            startNewGame();
+                            startTime();
+                        }
+                    });
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                    startNewGame();
+                    startTime();
+                }
+                /*
                 if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
                     isAdBackNewGame = true;
                     interstitialAd.show();
@@ -610,6 +701,8 @@ public class GamePartitionActivity extends AppCompatActivity {
                     startNewGame();
                     startTime();
                 }
+
+                 */
             }
         });
 
