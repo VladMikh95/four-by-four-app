@@ -13,8 +13,8 @@
     <string name="textview_games_label">Games</string>
     <string name="textview_percent_label">Percentage of victories</string>
     <string name="textview_one_min">1 minute</string>
-    <string name="textview_three_min">3 минуты</string>
-    <string name="textview_five_min">5 минут</string>
+    <string name="textview_three_min">3 minute</string>
+    <string name="textview_five_min">5 minutes</string>
     <string name="message_win">You win!</string>
     <string name="message_lose">You lose</string>
     <string name="button_menu">Menu</string>
