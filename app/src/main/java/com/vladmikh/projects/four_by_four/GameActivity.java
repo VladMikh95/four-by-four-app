@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameActivity extends AppCompatActivity {
+public class  GameActivity extends AppCompatActivity {
 
     private ImageView imageView1;
     private ImageView imageView2;
@@ -294,15 +294,17 @@ public class GameActivity extends AppCompatActivity {
             int seconds = timeToFinish % 60;
             String time = String.format("%02d:%02d", minutes, seconds);
             textViewTimer.setText(time);
-            if (timeToFinish < 10) {
-                textViewTimer.setTextColor(Color.RED);
-                playSound(soundIdClock, turningSound);
-            }
-            if (timeToFinish <= 0) {
-                timer.cancel();
-                isGameOver =true;
-                playSound(soundIdFail,turningSound);
-                createAlertDialog(getResources().getString(R.string.message_lose));
+            if (preferences.getInt(MainActivity.TIME_MODE, 0) != 0) {
+                if (timeToFinish < 10) {
+                    textViewTimer.setTextColor(Color.RED);
+                    playSound(soundIdClock, turningSound);
+                }
+                if (timeToFinish <= 0) {
+                    timer.cancel();
+                    isGameOver = true;
+                    playSound(soundIdFail, turningSound);
+                    createAlertDialog(getResources().getString(R.string.message_lose));
+                }
             }
         }
     };
@@ -690,7 +692,9 @@ public class GameActivity extends AppCompatActivity {
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
                     startNewGame();
+                    Log.d("TAG", "abc");
                     startTime();
+                    Log.d("TAG", "" + timeToFinish);
                 }
                 /*
                 if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
