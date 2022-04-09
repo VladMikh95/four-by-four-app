@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 //import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.FullScreenContentCallback;
@@ -145,46 +146,6 @@ public class  GameActivity extends AppCompatActivity {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(this,AD_BLOCK_ID, adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        Log.i("TAG", "onAdLoaded");
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        Log.i("TAG", loadAdError.getMessage());
-                        mInterstitialAd = null;
-                    }
-                });
-        //Реклама конец
-
-        //Закрытие рекламы на крестик - начало
-        /*
-        interstitialAd.setAdListener(new AdListener(){
-            @Override
-            public void onAdClosed() {
-                try {
-                    if (isAdBackNewGame) {
-                        startNewGame();
-                        startTime();
-                    } else {
-                        Intent intent = new Intent(GameActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                } catch (Exception e) {
-                    //пусто
-                }
-            }
-        });*/
-        //Закрытие рекламы на крестик - конец
 
         preferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         turningSound  =preferences.getInt(MainActivity.TURNING_SOUND, 0);
@@ -252,6 +213,73 @@ public class  GameActivity extends AppCompatActivity {
         if (timer != null) {
             timer.cancel();
         }
+    }
+
+    private void loadAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,AD_BLOCK_ID, adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("TAG", "onAdLoaded");
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("TAG", loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+        //Реклама конец
+
+        //Закрытие рекламы на крестик - начало
+        /*
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                try {
+                    if (isAdBackNewGame) {
+                        startNewGame();
+                        startTime();
+                    } else {
+                        Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    //пусто
+                }
+            }
+        });*/
+        //Закрытие рекламы на крестик - конец
     }
 
     private void startTime() {
@@ -368,6 +396,10 @@ public class  GameActivity extends AppCompatActivity {
 
 
     private void startNewGame() {
+
+        if (mInterstitialAd == null) {
+            loadAd();
+        }
         isGameOver = false;
         textViewTimer.setTextColor(Color.BLACK);
         if (chosenFigure != null) {
@@ -677,25 +709,17 @@ public class  GameActivity extends AppCompatActivity {
         buttonNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.cancel();
+                Log.d("TAG", "1");
                 if (mInterstitialAd != null) {
+                    Log.d("TAG", "2");
                     mInterstitialAd.show(GameActivity.this);
-                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                        @Override
-                        public void onAdDismissedFullScreenContent() {
-                            // Called when fullscreen content is dismissed.
-                            Log.d("TAG", "The ad was dismissed.");
-                            startNewGame();
-                            startTime();
-                        }
-                    });
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                    startNewGame();
-                    Log.d("TAG", "abc");
-                    startTime();
-                    Log.d("TAG", "" + timeToFinish);
+                    Log.d("TAG", "startTime");
                 }
+                dialog.cancel();
+                startNewGame();
+                startTime();
                 /*
                 if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
                     isAdBackNewGame = true;
