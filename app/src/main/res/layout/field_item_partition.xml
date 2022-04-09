@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="24dp"
-    android:background="@drawable/game_field_d"
+    android:background="@drawable/game_field_p"
     android:foregroundGravity="center"
     android:padding="4dp"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -50,8 +50,17 @@
         android:id="@+id/imageView6p"
         style="@style/imageViewField"
         android:onClick="onClickChooseFigure"
-        android:tag="2 5 10"
+        android:tag="2 5 7 10"
         app:layout_constraintStart_toEndOf="@+id/imageView5p"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2p"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/imageView7p"
+        style="@style/imageViewField"
+        android:onClick="onClickChooseFigure"
+        android:tag="6"
+        app:layout_constraintStart_toEndOf="@+id/imageView6p"
         app:layout_constraintTop_toBottomOf="@+id/imageView2p"
         app:srcCompat="@android:drawable/btn_star" />
 

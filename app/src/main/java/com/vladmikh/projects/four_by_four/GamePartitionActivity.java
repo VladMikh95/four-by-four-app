@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 //import com.google.android.gms.ads.InterstitialAd;
@@ -45,6 +46,7 @@ public class GamePartitionActivity extends AppCompatActivity {
     private ImageView imageView4;
     private ImageView imageView5;
     private ImageView imageView6;
+    private ImageView imageView7;
     private ImageView imageView8;
     private ImageView imageView9;
     private ImageView imageView10;
@@ -79,7 +81,8 @@ public class GamePartitionActivity extends AppCompatActivity {
 
     private boolean isAdBackNewGame; //Используется для определения какая активность будет открыта после нажатия крестика у рекламы
     private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913";
-    private static final String AD_BLOCK_ID = "ca-app-pub-8930311370509397/4758474259";
+    private static final String AD_BLOCK_ID = "ca-app-pub-3940256099942544/1033173712";
+    //ca-app-pub-8930311370509397/4758474259
 
     public InterstitialAd mInterstitialAd; //Реклама
 
@@ -143,49 +146,6 @@ public class GamePartitionActivity extends AppCompatActivity {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {}
         });
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(this,AD_BLOCK_ID, adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        Log.i("TAG", "onAdLoaded");
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        Log.i("TAG", loadAdError.getMessage());
-                        mInterstitialAd = null;
-                    }
-                });
-        //Реклама конец
-
-        //Закрытие рекламы на крестик - начало
-        /*
-        interstitialAd.setAdListener(new AdListener(){
-            @Override
-            public void onAdClosed() {
-                try {
-                    if (isAdBackNewGame) {
-                        startNewGame();
-                        startTime();
-                    } else {
-                        Intent intent = new Intent(GamePartitionActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                } catch (Exception e) {
-                    //пусто
-                }
-            }
-        });
-
-         */
-        //Закрытие рекламы на крестик - конец
-
 
         preferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         turningSound  =preferences.getInt(MainActivity.TURNING_SOUND, 0);
@@ -196,6 +156,7 @@ public class GamePartitionActivity extends AppCompatActivity {
         imageView4 = findViewById(R.id.imageView4p);
         imageView5 = findViewById(R.id.imageView5p);
         imageView6 = findViewById(R.id.imageView6p);
+        imageView7 = findViewById(R.id.imageView7p);
         imageView8 = findViewById(R.id.imageView8p);
         imageView9 = findViewById(R.id.imageView9p);
         imageView10 = findViewById(R.id.imageView10p);
@@ -253,6 +214,73 @@ public class GamePartitionActivity extends AppCompatActivity {
         }
     }
 
+    private void loadAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,AD_BLOCK_ID, adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("TAG", "onAdLoaded");
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad was dismissed.");
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad failed to show.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                // Make sure to set your reference to null so you don't
+                                // show it a second time.
+                                mInterstitialAd = null;
+                                Log.d("TAG", "The ad was shown.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i("TAG", loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+        //Реклама конец
+
+        //Закрытие рекламы на крестик - начало
+        /*
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                try {
+                    if (isAdBackNewGame) {
+                        startNewGame();
+                        startTime();
+                    } else {
+                        Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                } catch (Exception e) {
+                    //пусто
+                }
+            }
+        });*/
+        //Закрытие рекламы на крестик - конец
+    }
+
     private void startTime() {
         if (timer != null) {
             timer.cancel();
@@ -293,15 +321,17 @@ public class GamePartitionActivity extends AppCompatActivity {
             int seconds = timeToFinish % 60;
             String time = String.format("%02d:%02d", minutes, seconds);
             textViewTimer.setText(time);
-            if (timeToFinish < 10) {
-                textViewTimer.setTextColor(Color.RED);
-                playSound(soundIdClock, turningSound);
-            }
-            if (timeToFinish <= 0) {
-                timer.cancel();
-                isGameOver =true;
-                playSound(soundIdFail,turningSound);
-                createAlertDialog(getResources().getString(R.string.message_lose));
+            if (preferences.getInt(MainActivity.TIME_MODE, 0) != 0) {
+                if (timeToFinish < 10) {
+                    textViewTimer.setTextColor(Color.RED);
+                    playSound(soundIdClock, turningSound);
+                }
+                if (timeToFinish <= 0) {
+                    timer.cancel();
+                    isGameOver = true;
+                    playSound(soundIdFail, turningSound);
+                    createAlertDialog(getResources().getString(R.string.message_lose));
+                }
             }
         }
     };
@@ -365,6 +395,10 @@ public class GamePartitionActivity extends AppCompatActivity {
 
 
     private void startNewGame() {
+        if (mInterstitialAd == null) {
+            loadAd();
+        }
+
         isGameOver = false;
         textViewTimer.setTextColor(Color.BLACK);
         if (chosenFigure != null) {
@@ -419,6 +453,8 @@ public class GamePartitionActivity extends AppCompatActivity {
             figuresColor.remove(random);
         }
 
+        imageView7.setImageDrawable(null);
+        imageView7.setTag(TAG_IMAGE, 0);
         imageView10.setImageDrawable(null);
         imageView10.setTag(TAG_IMAGE, 0);
         imageView11.setImageDrawable(null);
@@ -476,12 +512,8 @@ public class GamePartitionActivity extends AppCompatActivity {
         int tagImage;
 
         for (int i = 1; i <= 20; i++) {
-            if (i == 7) {
-                builder.append(0);
-            } else {
-                tagImage = (int) (determineImageView(i).getTag(TAG_IMAGE));
-                builder.append(determineNumColor(tagImage));
-            }
+            tagImage = (int) (determineImageView(i).getTag(TAG_IMAGE));
+            builder.append(determineNumColor(tagImage));
         }
         preferences.edit().putString(MainActivity.FIELD_STATE_PREFERENCE, builder.toString()).apply();
 
@@ -498,9 +530,6 @@ public class GamePartitionActivity extends AppCompatActivity {
         } else {
             int tagImage;
             for (int i = 1; i <= 20; i++) {
-                if (i == 7) {
-                    continue;
-                }
 
                 imageView = determineImageView(i);
                 tagImage = determineColorId(Character.getNumericValue(fieldState.charAt(i - 1)));
@@ -532,6 +561,9 @@ public class GamePartitionActivity extends AppCompatActivity {
                 break;
             case 6:
                 result = imageView6;
+                break;
+            case 7:
+                result = imageView7;
                 break;
             case 8:
                 result = imageView8;
@@ -598,7 +630,8 @@ public class GamePartitionActivity extends AppCompatActivity {
         String tagIm12 = String.valueOf(imageView12.getTag(TAG_IMAGE));
         String tagIm15 = String.valueOf(imageView15.getTag(TAG_IMAGE));
 
-        if (imageView10.getDrawable() == null
+        if (imageView7.getDrawable() == null
+                &&imageView10.getDrawable() == null
                 && imageView11.getDrawable() == null
                 && imageView14.getDrawable() == null
                 && tagIm1.equals(String.valueOf(imageView2.getTag(TAG_IMAGE)))
@@ -676,23 +709,14 @@ public class GamePartitionActivity extends AppCompatActivity {
         buttonNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.cancel();
                 if (mInterstitialAd != null) {
                     mInterstitialAd.show(GamePartitionActivity.this);
-                    mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                        @Override
-                        public void onAdDismissedFullScreenContent() {
-                            // Called when fullscreen content is dismissed.
-                            Log.d("TAG", "The ad was dismissed.");
-                            startNewGame();
-                            startTime();
-                        }
-                    });
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                    startNewGame();
-                    startTime();
                 }
+                dialog.cancel();
+                startNewGame();
+                startTime();
                 /*
                 if (interstitialAd.isLoaded()) { //Проверка загрузки реклами
                     isAdBackNewGame = true;
