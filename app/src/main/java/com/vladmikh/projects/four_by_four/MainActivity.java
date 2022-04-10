@@ -105,10 +105,13 @@ public class MainActivity extends AppCompatActivity {
     public void onClickPlayNewGame(View view) {
         sharedPreferences.edit().putString(FIELD_STATE_PREFERENCE, PREFERENCE_EMPTY).apply();
         Intent intent;
-        if (sharedPreferences.getInt(MainActivity.GAME_MODE, 0)== 0) {
+        int gameMode = sharedPreferences.getInt(MainActivity.GAME_MODE, 0);
+        if (gameMode == 0) {
             intent = new Intent(this, GameActivity.class);
-        } else {
+        } else if (gameMode == 1) {
             intent = new Intent(this, GamePartitionActivity.class);
+        } else {
+            intent = new Intent(this, GameMobilePartitionActivity.class);
         }
         startActivity(intent);
     }
@@ -120,10 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickResume(View view) {
         Intent intent;
-        if (sharedPreferences.getInt(MainActivity.GAME_MODE, 0)== 0) {
+        int gameMode = sharedPreferences.getInt(MainActivity.GAME_MODE, 0);
+        if (gameMode == 0) {
             intent = new Intent(this, GameActivity.class);
-        } else {
+        }  else if(gameMode == 1) {
             intent = new Intent(this, GamePartitionActivity.class);
+        } else {
+            intent = new Intent(this, GameMobilePartitionActivity.class);
         }
         startActivity(intent);
     }

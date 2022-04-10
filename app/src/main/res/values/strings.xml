@@ -2,7 +2,7 @@
     <string name="app_name">Four by four</string>
     <string name="buttonNewGameText">New game</string>
     <string name="buttonGameRulesText">Game rules</string>
-    <string name="imageView_empty" >empty</string>
+    <string name="imageView_empty">empty</string>
     <string name="button_resume_text">Resume</string>
     <string name="botton_setting_text">Settings</string>
     <string name="button_statistics_text">Statistics</string>
@@ -28,6 +28,7 @@
     <string name="textview_game_rules_three">The player\'s task is to place chips of the same color in each of the 4 sectors.</string>
     <string name="textview_statistics_simple">Simple</string>
     <string name="textview_partition_wall">With a partition wall</string>
+    <string name="textview_mobile_partition_wall">With a movable partition</string>
     <string name="text_my_menu_button">Back</string>
     <string-array name="timeSettings">
         <item>@string/textview_no_time_limit</item>
@@ -38,5 +39,6 @@
     <string-array name="gameSettings">
         <item>@string/textview_statistics_simple</item>
         <item>@string/textview_partition_wall</item>
+        <item>@string/textview_mobile_partition_wall</item>
     </string-array>
 </resources>

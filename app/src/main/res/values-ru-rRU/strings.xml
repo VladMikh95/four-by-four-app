@@ -30,4 +30,5 @@
     <string name="textview_statistics_simple">Простой</string>
     <string name="textview_partition_wall">С перегородкой</string>
     <string name="text_my_menu_button">Назад</string>
+    <string name="textview_mobile_partition_wall">С передвижной перегородкой</string>
 </resources>
