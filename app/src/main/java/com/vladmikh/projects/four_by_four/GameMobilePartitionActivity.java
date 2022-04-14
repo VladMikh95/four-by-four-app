@@ -341,7 +341,7 @@ public class  GameMobilePartitionActivity extends AppCompatActivity {
     private void addCountGame(int timeMode) {
         int countGame;
         if (timeMode == 0) {
-            countGame = preferences.getInt(MainActivity.NO_TIME_LIMIT_GAME, 0);
+            countGame = preferences.getInt(MainActivity.NO_TIME_LIMIT_GAME_MOBILE, 0);
             countGame++;
             preferences.edit().putInt(MainActivity.NO_TIME_LIMIT_GAME_MOBILE, countGame).apply();
         } else if (timeMode == 1) {

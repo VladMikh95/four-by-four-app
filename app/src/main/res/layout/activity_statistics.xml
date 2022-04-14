@@ -148,7 +148,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewNoTimeGame"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/textViewNoTimeVictoryLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewNoTimePercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewNoTimeGameLabel"
@@ -169,7 +169,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewNoTimePercent"
                             app:layout_constraintStart_toEndOf="@id/textViewNoTimeVictory"
-                            app:layout_constraintTop_toBottomOf="@id/textViewNoTimeGameLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewNoTimePercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewNoTimePercentLabel"
@@ -233,7 +233,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewOneMinGame"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/textViewOneMinVictoryLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewOneMinPercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewOneMinGameLabel"
@@ -254,7 +254,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewOneMinPercent"
                             app:layout_constraintStart_toEndOf="@id/textViewOneMinVictory"
-                            app:layout_constraintTop_toBottomOf="@id/textViewOneMinGameLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewOneMinPercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewOneMinPercentLabel"
@@ -318,7 +318,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewThreeMinGame"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/textViewThreeMinVictoryLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewThreeMinPercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewThreeMinGameLabel"
@@ -339,7 +339,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewThreeMinPercent"
                             app:layout_constraintStart_toEndOf="@id/textViewThreeMinVictory"
-                            app:layout_constraintTop_toBottomOf="@id/textViewThreeMinGameLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewThreeMinPercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewThreeMinPercentLabel"
@@ -404,7 +404,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewFiveMinGame"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/textViewFiveMinVictoryLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewFiveMinPercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewFiveMinGameLabel"
@@ -425,7 +425,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/textViewFiveMinPercent"
                             app:layout_constraintStart_toEndOf="@id/textViewFiveMinVictory"
-                            app:layout_constraintTop_toBottomOf="@id/textViewFiveMinGameLabel" />
+                            app:layout_constraintTop_toBottomOf="@+id/textViewFiveMinPercentLabel" />
 
                         <TextView
                             android:id="@+id/textViewFiveMinPercentLabel"
