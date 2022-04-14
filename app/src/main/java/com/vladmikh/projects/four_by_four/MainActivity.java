@@ -47,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
     public static final String FIVE_MIN_VICTORY_PARTITION = "fiveMinVictoryPartition";
     public static final String FIVE_MIN_GAME_PARTITION = "fiveMinGamePartition";
 
+    public static final String NO_TIME_LIMIT_VICTORY_MOBILE = "noTimeLimitVictoryMobile";
+    public static final String NO_TIME_LIMIT_GAME_MOBILE = "noTimeLimitGameMobile";
+    public static final String ONE_MIN_VICTORY_MOBILE = "oneMinVictoryMobile";
+    public static final String ONE_MIN_GAME_MOBILE = "oneMinGameMobile";
+    public static final String THREE_MIN_VICTORY_MOBILE = "threeMinVictoryMobile";
+    public static final String THREE_MIN_GAME_MOBILE = "threeMinGameMobile";
+    public static final String FIVE_MIN_VICTORY_MOBILE = "fiveMinVictoryMobile";
+    public static final String FIVE_MIN_GAME_MOBILE = "fiveMinGameMobile";
+
     public static final String TURNING_SOUND = "turningSound";
     public static final int SOUND_ON = 0;
     public static final int SOUND_OFF = 1;
