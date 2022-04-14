@@ -47,15 +47,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Switch
-                    android:id="@+id/switchStatistics"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <com.vladmikh.projects.four_by_four.CustomSpinner
+                    android:id="@+id/spinnerGameRules"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:dropDownVerticalOffset="40dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/spinner_time_style"
+                    android:entries="@array/gameSettings"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewStatisticsTitle"
                     app:layout_constraintBottom_toTopOf="@+id/textViewNoTimeLimit"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewStatisticsTitle" />
+                    />
 
                 <TextView
                     android:id="@+id/textViewStatisticsTitle"
@@ -70,31 +74,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textViewStatisticsSimple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:onClick="onClickSimple"
-                    android:text="@string/textview_statistics_simple"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/switchStatistics"
-                    app:layout_constraintEnd_toStartOf="@+id/switchStatistics"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewStatisticsTitle" />
-
-                <TextView
-                    android:id="@+id/textViewStatisticsPartition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:text="@string/textview_partition_wall"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:onClick="onClickPartition"
-                    app:layout_constraintStart_toEndOf="@id/switchStatistics"
-                    app:layout_constraintTop_toBottomOf="@id/textViewStatisticsTitle" />
-
-                <TextView
                     android:id="@+id/textViewNoTimeLimit"
                     style="@style/textViewStatisticsModeLabel"
                     android:layout_width="wrap_content"
@@ -102,7 +81,7 @@
                     android:text="@string/textview_no_time_limit"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/switchStatistics" />
+                    app:layout_constraintTop_toBottomOf="@+id/spinnerGameRules" />
 
                 <TextView
                     android:id="@+id/textViewOneMinLimit"
