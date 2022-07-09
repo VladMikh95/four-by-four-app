@@ -86,8 +86,7 @@ public class  GameMobilePartitionActivity extends AppCompatActivity {
     private static final String TIME_TO_END_PREFERENCES = "timeToEnd";
 
     private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913";
-    private static final String AD_BLOCK_ID = "ca-app-pub-3940256099942544/1033173712";
-    //ca-app-pub-8930311370509397/4758474259
+    private static final String AD_BLOCK_ID = "ca-app-pub-8930311370509397/4758474259";
 
     public InterstitialAd mInterstitialAd; //Реклама
 
@@ -753,26 +752,29 @@ public class  GameMobilePartitionActivity extends AppCompatActivity {
                 return;
             }
             //Если фигура является перегородкой
-            if (R.drawable.partition == (int) chosenFigure.getTag(TAG_IMAGE)
-                    && imageView.getDrawable() == null
-                    && (imageView7.getDrawable() == null || R.drawable.partition == (int) imageView7.getTag(TAG_IMAGE))
-                    && (imageView10.getDrawable() == null || R.drawable.partition == (int) imageView10.getTag(TAG_IMAGE))
-                    && (imageView11.getDrawable() == null || R.drawable.partition == (int) imageView11.getTag(TAG_IMAGE))
-                    && (imageView14.getDrawable() == null || R.drawable.partition == (int) imageView14.getTag(TAG_IMAGE))
-            ) {
+            if (R.drawable.partition == (int) chosenFigure.getTag(TAG_IMAGE)) {
+                if (imageView.getDrawable() == null
+                        && (imageView7.getDrawable() == null || R.drawable.partition == (int) imageView7.getTag(TAG_IMAGE))
+                        && (imageView10.getDrawable() == null || R.drawable.partition == (int) imageView10.getTag(TAG_IMAGE))
+                        && (imageView11.getDrawable() == null || R.drawable.partition == (int) imageView11.getTag(TAG_IMAGE))
+                        && (imageView14.getDrawable() == null || R.drawable.partition == (int) imageView14.getTag(TAG_IMAGE))
+                ) {
 
-                int tagImage = (int) chosenFigure.getTag(TAG_IMAGE);
-                imageView.setImageResource(tagImage);
-                imageView.setTag(TAG_IMAGE, tagImage);
-                imageView.setBackgroundResource(R.drawable.chosen_field);
-                chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
-                chosenFigure.setImageDrawable(null);
-                chosenFigure.setTag(TAG_IMAGE, 0);
-                chosenFigure = imageView;
-                isChosenFigure = true;
-                playSound(soundIdMotion, turningSound);
-                isWin();
-                return;
+                    int tagImage = (int) chosenFigure.getTag(TAG_IMAGE);
+                    imageView.setImageResource(tagImage);
+                    imageView.setTag(TAG_IMAGE, tagImage);
+                    imageView.setBackgroundResource(R.drawable.chosen_field);
+                    chosenFigure.setBackgroundColor(getResources().getColor(R.color.trans));
+                    chosenFigure.setImageDrawable(null);
+                    chosenFigure.setTag(TAG_IMAGE, 0);
+                    chosenFigure = imageView;
+                    isChosenFigure = true;
+                    playSound(soundIdMotion, turningSound);
+                    isWin();
+                    return;
+                }
+
+
 
             } else {
                 if (chosenFigure.getId() != imageView.getId()

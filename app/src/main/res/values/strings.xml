@@ -23,7 +23,7 @@
     <string name="textview_settings_sound">Game sound:</string>
     <string name="textview_settings_off">Turn off</string>
     <string name="textview_settings_on">Turn on</string>
-    <string name="textview_game_rules_one">This game develops logic, intelligence and memory. At the beginning of the game, you can set a timer. Timing variations: 1 minute, 3 minutes, 5 minutes. It is also possible to play without a time limit. There are 2 game modes: simple and with a partition wall.</string>
+    <string name="textview_game_rules_one">This game develops logic, intelligence and memory. At the beginning of the game, you can set a timer. Timing variations: 1 minute, 3 minutes, 5 minutes. It is also possible to play without a time limit. There are 3 game modes: simple, with a partition and with a movable partition.</string>
     <string name="textview_game_rules_two">"After the start of the game, 16 chips of 4 different colors appear on the playing field. The playing field is divided into 4 sectors. "</string>
     <string name="textview_game_rules_three">The player\'s task is to place chips of the same color in each of the 4 sectors.</string>
     <string name="textview_game_rules_four">In the game mode with a movable partition, it can be rearranged into other passages, but all passages must be free of chips.</string>

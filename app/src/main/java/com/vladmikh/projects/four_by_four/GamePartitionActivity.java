@@ -81,8 +81,8 @@ public class GamePartitionActivity extends AppCompatActivity {
 
     private boolean isAdBackNewGame; //Используется для определения какая активность будет открыта после нажатия крестика у рекламы
     private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913";
-    private static final String AD_BLOCK_ID = "ca-app-pub-3940256099942544/1033173712";
-    //ca-app-pub-8930311370509397/4758474259
+    private static final String AD_BLOCK_ID = "ca-app-pub-8930311370509397/4758474259";
+
 
     public InterstitialAd mInterstitialAd; //Реклама
 

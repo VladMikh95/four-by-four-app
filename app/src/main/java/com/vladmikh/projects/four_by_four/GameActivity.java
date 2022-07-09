@@ -86,8 +86,8 @@ public class  GameActivity extends AppCompatActivity {
     private static final String TIME_TO_END_PREFERENCES = "timeToEnd";
 
     private static final String APPLICATION_ID = "ca-app-pub-8930311370509397~5824143913";
-    private static final String AD_BLOCK_ID = "ca-app-pub-3940256099942544/1033173712";
-    //ca-app-pub-8930311370509397/4758474259
+    private static final String AD_BLOCK_ID = "ca-app-pub-8930311370509397/4758474259";
+
 
     public InterstitialAd mInterstitialAd; //Реклама
 

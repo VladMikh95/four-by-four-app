@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -53,7 +54,8 @@ public class SettingsActivity extends AppCompatActivity
         spinnerGame.setSpinnerEventsListener(this);
 
         switchSound = findViewById(R.id.switchSettings);
-        switchSound.setChecked(sharedPreferences.getInt(MainActivity.TURNING_SOUND, 0) == 0);
+        switchSound.setChecked(sharedPreferences.getInt(MainActivity.TURNING_SOUND, 1) == 0);
+        Log.i("abc",sharedPreferences.getInt(MainActivity.TURNING_SOUND, 1) + "");
 
 
 
